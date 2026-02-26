@@ -26,11 +26,15 @@ export default function ProjectsPage() {
         A selection of personal projects, tools, and experiments. All built with care.
       </p>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project, i) => (
-          <ProjectCard key={project.title} project={project} index={i} />
-        ))}
-      </div>
+      {projects.length === 0 ? (
+        <p className="font-mono text-sm text-white/25">// more coming soon</p>
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, i) => (
+            <ProjectCard key={project.title} project={project} index={i} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
