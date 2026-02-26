@@ -3,8 +3,8 @@ import { challengeProjects } from "@/content/challenge";
 import ChallengeGrid from "@/components/ChallengeGrid";
 
 export const metadata: Metadata = {
-  title: "50 Projects in 50 Days",
-  description: "Tracking my progress through the 50 Projects in 50 Days challenge.",
+  title: "50 Projects in 50 Weekdays",
+  description: "Tracking my progress building one small project every weekday for 50 days.",
 };
 
 export default function FiftyProjectsPage() {
@@ -20,10 +20,10 @@ export default function FiftyProjectsPage() {
       >
         50 Projects
         <br />
-        <span className="gradient-text">in 50 Days.</span>
+        <span className="gradient-text">in 50 Weekdays.</span>
       </h1>
       <p className="mb-14 max-w-xl text-base text-white/40">
-        One small project every day for 50 days. Building instincts, shipping fast,
+        One small project every weekday for 50 days. Building instincts, shipping fast,
         learning in public. Click a completed slot to see the live demo.
       </p>
 

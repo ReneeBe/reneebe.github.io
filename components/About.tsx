@@ -103,7 +103,7 @@ export default function About() {
             <p>
               Currently working through the{" "}
               <a href="/50projects" className="font-medium text-[#3a86ff] hover:underline">
-                50 Projects in 50 Days
+                50 Projects in 50 Weekdays
               </a>{" "}
               challenge and writing about what I learn on the{" "}
               <a href="/blog" className="font-medium text-[#06d6a0] hover:underline">
