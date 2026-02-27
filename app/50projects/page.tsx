@@ -20,7 +20,7 @@ export default function FiftyProjectsPage() {
       >
         50 Projects
         <br />
-        <span className="gradient-text">in 50 Weekdays.</span>
+        <span className="gradient-text">in 50 Days.</span>
       </h1>
       <p className="mb-14 max-w-xl text-base text-white/40">
         One small project every weekday for 50 days. Building instincts, shipping fast,
