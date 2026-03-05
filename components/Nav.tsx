@@ -25,8 +25,8 @@ export default function Nav() {
           className="mr-2 rounded-full px-4 py-1.5 font-heading text-sm font-black text-white tracking-tight"
           style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
         >
-          rb
-          <span className="gradient-text">.dev</span>
+          reneebe
+          <span className="gradient-text">.github.io</span>
         </Link>
 
         {/* Divider */}
