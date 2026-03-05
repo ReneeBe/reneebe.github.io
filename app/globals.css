@@ -18,6 +18,25 @@
 :root {
   --background: #050510;
   --foreground: #f0f0f8;
+
+  /* Blob colors — overridden by ThemeSwitcher */
+  --blob-1: #f72585;
+  --blob-2: #7209b7;
+  --blob-3: #3a86ff;
+  --blob-4: #06d6a0;
+  --blob-opacity: 0.18;
+
+  /* Gradient accent colors */
+  --grad-a: #f72585;
+  --grad-b: #7209b7;
+  --grad-c: #3a86ff;
+  --grad-d: #06d6a0;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-strong-bg: rgba(255, 255, 255, 0.07);
+  --glass-strong-border: rgba(255, 255, 255, 0.14);
 }
 
 *, *::before, *::after {
@@ -49,7 +68,7 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.18;
+  opacity: var(--blob-opacity);
   animation: drift 18s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -57,7 +76,7 @@ body {
 .blob-1 {
   width: 700px;
   height: 700px;
-  background: #f72585;
+  background: var(--blob-1);
   top: -200px;
   left: -200px;
   animation-duration: 20s;
@@ -66,7 +85,7 @@ body {
 .blob-2 {
   width: 600px;
   height: 600px;
-  background: #7209b7;
+  background: var(--blob-2);
   top: 20%;
   right: -150px;
   animation-duration: 24s;
@@ -76,7 +95,7 @@ body {
 .blob-3 {
   width: 550px;
   height: 550px;
-  background: #3a86ff;
+  background: var(--blob-3);
   bottom: 10%;
   left: 10%;
   animation-duration: 22s;
@@ -86,7 +105,7 @@ body {
 .blob-4 {
   width: 500px;
   height: 500px;
-  background: #06d6a0;
+  background: var(--blob-4);
   bottom: -100px;
   right: 5%;
   animation-duration: 26s;
@@ -102,17 +121,17 @@ body {
 
 /* ── Glass card utility ─────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--glass-strong-bg);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--glass-strong-border);
 }
 
 /* ── Glow effects ───────────────────────────────────────────── */
@@ -123,7 +142,7 @@ body {
 
 /* ── Gradient text ──────────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #f72585 0%, #7209b7 30%, #3a86ff 65%, #06d6a0 100%);
+  background: linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 30%, var(--grad-c) 65%, var(--grad-d) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

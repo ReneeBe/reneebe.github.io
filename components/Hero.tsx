@@ -47,16 +47,7 @@ export default function Hero() {
           <span className="h-2 w-2 rounded-full bg-white/80" style={{ boxShadow: "0 0 5px white" }} />
           Available for work
         </Link>
-        <Link
-          href="/projects"
-          className="glass inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white/80 transition-all duration-300 hover:scale-105 hover:text-white"
-        >
-          See my projects
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </Link>
-        <Link
+<Link
           href="/blog"
           className="glass inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white/50 transition-all duration-300 hover:scale-105 hover:text-white/80"
         >
