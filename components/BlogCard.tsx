@@ -25,18 +25,24 @@ export default function BlogCard({ post }: Props) {
           (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 transparent";
         }}
       >
-        <div className="mb-3 flex items-center gap-3 font-mono text-xs text-white/25">
+        <div
+          className="mb-3 flex items-center gap-3 font-mono text-xs"
+          style={{ color: "color-mix(in srgb, var(--foreground) 25%, transparent)" }}
+        >
           <time dateTime={post.date}>{formattedDate}</time>
           <span>·</span>
           <span>{post.readingTime} min read</span>
         </div>
         <h2
-          className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-[#3a86ff]"
-          style={{ fontFamily: "var(--font-heading)" }}
+          className="mb-2 text-xl font-bold transition-colors group-hover:text-[var(--grad-c)]"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
         >
           {post.title}
         </h2>
-        <p className="mb-4 text-sm leading-relaxed text-white/45">{post.excerpt}</p>
+        <p
+          className="mb-4 text-sm leading-relaxed"
+          style={{ color: "color-mix(in srgb, var(--foreground) 45%, transparent)" }}
+        >{post.excerpt}</p>
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (
             <span

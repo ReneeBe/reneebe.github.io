@@ -20,6 +20,7 @@ export default function ThemeSwitcher() {
       root.style.setProperty(key, value);
     }
     document.body.style.backgroundColor = theme.vars["--background"];
+    document.body.style.backgroundImage = theme.vars["--bg-pattern"] === "none" ? "" : theme.vars["--bg-pattern"];
     document.body.style.color = theme.vars["--foreground"];
     setCurrent(theme);
     if (theme.id === "custom") {
@@ -100,8 +101,14 @@ export default function ThemeSwitcher() {
       </button>
 
       {open && (
-        <div className="glass-strong absolute right-0 top-11 z-[60] w-64 rounded-2xl p-2 shadow-2xl">
-          <p className="px-3 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+        <div
+          className="glass-strong absolute right-0 top-11 z-[60] w-64 rounded-2xl p-2 shadow-2xl"
+          style={{ color: "var(--foreground)" }}
+        >
+          <p
+            className="px-3 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-widest"
+            style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+          >
             Themes
           </p>
 
@@ -112,12 +119,20 @@ export default function ThemeSwitcher() {
                 applyTheme(theme);
                 setOpen(false);
               }}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all hover:bg-white/5 ${
-                current.id === theme.id ? "bg-white/8" : ""
-              }`}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all"
+              style={{
+                background: current.id === theme.id ? "var(--glass-strong-bg)" : undefined,
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--glass-bg)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = current.id === theme.id ? "var(--glass-strong-bg)" : ""; }}
             >
               <span className="w-5 text-center text-base">{theme.emoji}</span>
-              <span className="flex-1 font-medium text-white/80">{theme.name}</span>
+              <span
+                className="flex-1 font-medium"
+                style={{ color: "color-mix(in srgb, var(--foreground) 80%, transparent)" }}
+              >
+                {theme.name}
+              </span>
               <div className="flex gap-0.5">
                 {(["--grad-a", "--grad-b", "--grad-c", "--grad-d"] as const).map(
                   (k) => (
@@ -133,18 +148,33 @@ export default function ThemeSwitcher() {
           ))}
 
           {current.id === "custom" && (
-            <button
-              className="flex w-full items-center gap-3 rounded-xl bg-white/8 px-3 py-2 text-left text-sm ring-1 ring-white/10"
+            <div
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm"
+              style={{
+                background: "var(--glass-strong-bg)",
+                border: "1px solid var(--glass-strong-border)",
+              }}
             >
               <span className="w-5 text-center text-base">✨</span>
-              <span className="flex-1 font-medium text-white/80 truncate">{current.name}</span>
-            </button>
+              <span
+                className="flex-1 truncate font-medium"
+                style={{ color: "color-mix(in srgb, var(--foreground) 80%, transparent)" }}
+              >
+                {current.name}
+              </span>
+            </div>
           )}
 
-          <div className="mx-3 my-2 border-t border-white/10" />
+          <div
+            className="mx-3 my-2 border-t"
+            style={{ borderColor: "color-mix(in srgb, var(--foreground) 10%, transparent)" }}
+          />
 
           <div className="px-1 pb-1">
-            <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+            <p
+              className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-widest"
+              style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+            >
               AI Theme
             </p>
             <textarea
@@ -154,7 +184,12 @@ export default function ThemeSwitcher() {
                 if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) generateTheme();
               }}
               placeholder={`"ocean at dusk" or "retro arcade"…`}
-              className="w-full resize-none rounded-xl bg-white/5 px-3 py-2 text-xs text-white/70 placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-white/20"
+              className="w-full resize-none rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1"
+              style={{
+                background: "var(--glass-bg)",
+                color: "color-mix(in srgb, var(--foreground) 70%, transparent)",
+                border: "1px solid var(--glass-border)",
+              }}
               rows={2}
             />
             {error && (

@@ -11,18 +11,26 @@ export default function FiftyProjectsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-20">
       <div className="mb-4 flex items-center gap-4">
-        <p className="text-xs font-mono text-white/30 uppercase tracking-widest">03 / challenge</p>
-        <div className="h-px flex-1 bg-white/5" />
+        <p
+          className="text-xs font-mono uppercase tracking-widest"
+          style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+        >
+          03 / challenge
+        </p>
+        <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
       <h1
-        className="mb-4 text-5xl font-black tracking-tight text-white sm:text-6xl"
-        style={{ fontFamily: "var(--font-heading)" }}
+        className="mb-4 text-5xl font-black tracking-tight sm:text-6xl"
+        style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
         50 Projects
         <br />
         <span className="gradient-text">in 50 Days.</span>
       </h1>
-      <p className="mb-14 max-w-xl text-base text-white/40">
+      <p
+        className="mb-14 max-w-xl text-base"
+        style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}
+      >
         One small project every weekday for 50 days. Building instincts, shipping fast,
         learning in public. Click a completed slot to see the live demo.
       </p>

@@ -1,7 +1,7 @@
 const frontend = [
   { name: "TypeScript", color: "#3a86ff" },
   { name: "React", color: "#06d6a0" },
-  { name: "Next.js", color: "#f0f0f8" },
+  { name: "Next.js", color: "#7209b7" },
   { name: "Tailwind CSS", color: "#3a86ff" },
   { name: "Framer Motion", color: "#f72585" },
   { name: "GraphQL", color: "#f72585" },
@@ -56,10 +56,15 @@ function StackCard({
           {icon}
         </div>
         <div>
-          <p className="text-xs font-mono text-white/30 uppercase tracking-widest">Stack</p>
+          <p
+            className="text-xs font-mono uppercase tracking-widest"
+            style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+          >
+            Stack
+          </p>
           <h3
-            className="text-base font-bold text-white"
-            style={{ fontFamily: "var(--font-heading)" }}
+            className="text-base font-bold"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
           >
             {title}
           </h3>
@@ -79,34 +84,42 @@ export default function About() {
     <section className="mx-auto max-w-6xl px-6 py-24">
       {/* Section label */}
       <div className="mb-12 flex items-center gap-4">
-        <p className="text-xs font-mono text-white/30 uppercase tracking-widest">01 / about</p>
-        <div className="h-px flex-1 bg-white/5" />
+        <p
+          className="text-xs font-mono uppercase tracking-widest"
+          style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+        >
+          01 / about
+        </p>
+        <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
 
       <div className="grid gap-12 lg:grid-cols-2">
         {/* Left: bio */}
         <div>
           <h2
-            className="mb-6 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl"
-            style={{ fontFamily: "var(--font-heading)" }}
+            className="mb-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
           >
             I build products,
             <br />
             <span className="gradient-text">not just features.</span>
           </h2>
-          <div className="space-y-4 text-base leading-relaxed text-white/55">
+          <div
+            className="space-y-4 text-base leading-relaxed"
+            style={{ color: "color-mix(in srgb, var(--foreground) 55%, transparent)" }}
+          >
             <p>
               I&apos;m a fullstack engineer with 5+ years of experience taking ideas from
               whiteboard to production. I care about the whole stack — clean APIs,
               performant UIs, solid infrastructure.
             </p>
             <p>
-              Currently working through the{" "}
-              <a href="/50projects" className="font-medium text-[#3a86ff] hover:underline">
+              Currently working through my{" "}
+              <a href="/50projects" className="font-medium hover:underline" style={{ color: "var(--grad-c)" }}>
                 50 Projects in 50 Weekdays
               </a>{" "}
               challenge and writing about what I learn on the{" "}
-              <a href="/blog" className="font-medium text-[#06d6a0] hover:underline">
+              <a href="/blog" className="font-medium hover:underline" style={{ color: "var(--grad-d)" }}>
                 blog
               </a>
               .
@@ -125,14 +138,14 @@ export default function About() {
                   style={{ boxShadow: "0 0 8px #06d6a0" }}
                 />
                 <div>
-                  <p className="text-sm font-semibold text-white">Available for work</p>
-                  <p className="text-xs text-white/40">Open to fulltime & contract roles</p>
+                  <p className="text-sm font-semibold" style={{ color: "var(--foreground)" }}>Available for work</p>
+                  <p className="text-xs" style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}>Open to fulltime & contract roles</p>
                 </div>
               </div>
               <a
                 href="mailto:hello@reneeberger.dev"
                 className="rounded-full px-4 py-2 text-xs font-semibold text-white transition-all duration-200 hover:scale-105"
-                style={{ background: "linear-gradient(135deg, #f72585, #7209b7)" }}
+                style={{ background: "linear-gradient(135deg, var(--grad-a), var(--grad-b))" }}
               >
                 Get in touch
               </a>

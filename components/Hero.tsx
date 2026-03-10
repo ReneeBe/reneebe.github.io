@@ -12,27 +12,27 @@ export default function Hero() {
       {/* Terminal label */}
       <div
         className="glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono"
-        style={{ color: "#06d6a0" }}
+        style={{ color: "var(--grad-d)" }}
       >
-        <span className="h-2 w-2 rounded-full bg-[#06d6a0] opacity-80" style={{ boxShadow: "0 0 6px #06d6a0" }} />
-        <span className="text-white/40">$</span>
-        <span>&nbsp;whoami&nbsp;</span>
-        <span className="text-white/30">//</span>
-        <span className="text-white/60">fullstack_engineer</span>
+        <span className="h-2 w-2 rounded-full" style={{ background: "var(--grad-d)", boxShadow: "0 0 6px var(--grad-d)", opacity: 0.8 }} />
+        <span style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}>$</span>
+        <span style={{ color: "color-mix(in srgb, var(--foreground) 80%, transparent)" }}>&nbsp;whoami&nbsp;</span>
+        <span style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}>//</span>
+        <span style={{ color: "color-mix(in srgb, var(--foreground) 60%, transparent)" }}>fullstack_engineer</span>
       </div>
 
       {/* Name */}
       <h1
-        className="mb-4 text-7xl font-black leading-[0.9] tracking-tighter sm:text-8xl md:text-[9rem]"
+        className="mb-4 text-7xl font-black leading-[0.9] tracking-tight sm:text-8xl md:text-[9rem]"
         style={{ fontFamily: "var(--font-heading)" }}
       >
-        <span className="gradient-text">Renee</span>
+        <span className="gradient-text inline-block pr-2">Renee</span>
         <br />
-        <span className="text-white">Berger</span>
+        <span style={{ color: "var(--foreground)" }}>Berger</span>
       </h1>
 
       {/* Subtitle */}
-      <p className="mb-10 max-w-md text-lg text-white/50">
+      <p className="mb-10 max-w-md text-lg" style={{ color: "color-mix(in srgb, var(--foreground) 50%, transparent)" }}>
         I build fast, scalable web products — from pixel-perfect UIs to
         robust backend systems and everything in between.
       </p>

@@ -22,15 +22,15 @@ export default function Nav() {
         {/* Logo */}
         <Link
           href="/"
-          className="mr-2 rounded-full px-4 py-1.5 font-heading text-sm font-black text-white tracking-tight"
-          style={{ fontFamily: "var(--font-heading)" }}
+          className="mr-2 rounded-full px-4 py-1.5 text-sm font-black tracking-tight"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
         >
           reneebe
           <span className="gradient-text">.github.io</span>
         </Link>
 
         {/* Divider */}
-        <div className="h-4 w-px bg-white/10" />
+        <div className="h-4 w-px" style={{ background: "color-mix(in srgb, var(--foreground) 10%, transparent)" }} />
 
         {/* Links */}
         {links.map(({ href, label }) => {
@@ -40,18 +40,20 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-white/10 text-white"
-                  : "text-white/50 hover:bg-white/5 hover:text-white/90"
-              }`}
+              className="rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200"
+              style={{
+                background: isActive ? "color-mix(in srgb, var(--foreground) 10%, transparent)" : undefined,
+                color: isActive
+                  ? "var(--foreground)"
+                  : "color-mix(in srgb, var(--foreground) 50%, transparent)",
+              }}
               dangerouslySetInnerHTML={{ __html: label }}
             />
           );
         })}
 
         {/* Hire me badge */}
-        <div className="ml-2 h-4 w-px bg-white/10" />
+        <div className="ml-2 h-4 w-px" style={{ background: "color-mix(in srgb, var(--foreground) 10%, transparent)" }} />
         <Link
           href="mailto:hello@reneeberger.dev"
           className="ml-1 rounded-full px-4 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:brightness-110"

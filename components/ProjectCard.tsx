@@ -40,12 +40,15 @@ export default function ProjectCard({ project, index }: Props) {
       </div>
 
       <h3
-        className="mb-2 text-lg font-bold text-white"
-        style={{ fontFamily: "var(--font-heading)" }}
+        className="mb-2 text-lg font-bold"
+        style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
         {project.title}
       </h3>
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-white/50">
+      <p
+        className="mb-4 flex-1 text-sm leading-relaxed"
+        style={{ color: "color-mix(in srgb, var(--foreground) 50%, transparent)" }}
+      >
         {project.description}
       </p>
 
@@ -54,8 +57,11 @@ export default function ProjectCard({ project, index }: Props) {
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full px-2.5 py-0.5 text-[11px] font-medium text-white/40"
-            style={{ background: "rgba(255,255,255,0.05)" }}
+            className="rounded-full px-2.5 py-0.5 text-[11px] font-medium"
+            style={{
+              color: "color-mix(in srgb, var(--foreground) 40%, transparent)",
+              background: "color-mix(in srgb, var(--foreground) 5%, transparent)",
+            }}
           >
             {tag}
           </span>
@@ -80,7 +86,10 @@ export default function ProjectCard({ project, index }: Props) {
             href={project.repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold text-white/30 transition-colors hover:text-white/70"
+            className="text-xs font-semibold transition-colors"
+            style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "color-mix(in srgb, var(--foreground) 70%, transparent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "color-mix(in srgb, var(--foreground) 30%, transparent)"; }}
           >
             GitHub ↗
           </a>

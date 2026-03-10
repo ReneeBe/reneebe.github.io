@@ -20,21 +20,29 @@ export default function ChallengeGrid({ projects }: Props) {
             >
               {completed}
             </span>
-            <span className="ml-1 text-sm text-white/30">/ 50 complete</span>
+            <span
+              className="ml-1 text-sm"
+              style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
+            >
+              / 50 complete
+            </span>
           </div>
           <span
             className="font-mono text-sm font-bold"
-            style={{ color: "#06d6a0" }}
+            style={{ color: "var(--grad-d)" }}
           >
             {pct}%
           </span>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
+        <div
+          className="h-2 w-full overflow-hidden rounded-full"
+          style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }}
+        >
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{
               width: `${pct}%`,
-              background: "linear-gradient(90deg, #f72585, #7209b7, #3a86ff, #06d6a0)",
+              background: "linear-gradient(90deg, var(--grad-a), var(--grad-b), var(--grad-c), var(--grad-d))",
               boxShadow: "0 0 10px rgba(58,134,255,0.5)",
             }}
           />
@@ -60,19 +68,22 @@ export default function ChallengeGrid({ projects }: Props) {
                       boxShadow: `0 0 16px ${accent}15`,
                     }
                   : {
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.05)",
+                      background: "color-mix(in srgb, var(--foreground) 2%, transparent)",
+                      border: "1px solid color-mix(in srgb, var(--foreground) 5%, transparent)",
                     }
               }
             >
               <span
                 className="text-[10px] font-black font-mono"
-                style={{ color: project.completed ? accent : "rgba(255,255,255,0.15)" }}
+                style={{ color: project.completed ? accent : "color-mix(in srgb, var(--foreground) 15%, transparent)" }}
               >
                 {String(project.day).padStart(2, "0")}
               </span>
               {project.completed && (
-                <span className="line-clamp-2 text-[9px] font-medium leading-tight text-white/60">
+                <span
+                  className="line-clamp-2 text-[9px] font-medium leading-tight"
+                  style={{ color: "color-mix(in srgb, var(--foreground) 60%, transparent)" }}
+                >
                   {project.title}
                 </span>
               )}
