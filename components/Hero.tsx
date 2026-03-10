@@ -24,7 +24,7 @@ export default function Hero() {
       {/* Name */}
       <h1
         className="mb-4 text-7xl font-black leading-[0.9] tracking-tighter sm:text-8xl md:text-[9rem]"
-        style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+        style={{ fontFamily: "var(--font-heading)" }}
       >
         <span className="gradient-text">Renee</span>
         <br />
@@ -61,7 +61,7 @@ export default function Hero() {
           <div key={label} className="text-center">
             <div
               className="text-3xl font-black tracking-tight gradient-text"
-              style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+              style={{ fontFamily: "var(--font-heading)" }}
             >
               {value}
             </div>

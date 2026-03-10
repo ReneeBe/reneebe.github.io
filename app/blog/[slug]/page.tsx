@@ -57,7 +57,7 @@ export default async function PostPage({ params }: Props) {
         </div>
         <h1
           className="mb-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl"
-          style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+          style={{ fontFamily: "var(--font-heading)" }}
         >
           {post.title}
         </h1>

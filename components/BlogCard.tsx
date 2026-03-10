@@ -32,7 +32,7 @@ export default function BlogCard({ post }: Props) {
         </div>
         <h2
           className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-[#3a86ff]"
-          style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+          style={{ fontFamily: "var(--font-heading)" }}
         >
           {post.title}
         </h2>

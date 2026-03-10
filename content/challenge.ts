@@ -15,9 +15,17 @@ export const challengeProjects: ChallengeProject[] = [
     url: "https://reneebe.github.io",
     completed: true,
   },
-  ...Array.from({ length: 49 }, (_, i) => ({
-    day: i + 2,
-    title: `Day ${i + 2}`,
+  {
+    day: 2,
+    title: "Portfolio Skins",
+    description: "Theme switcher for my portfolio — pre-made skins and AI-generated themes from a text description.",
+    url: "https://reneebe.github.io/portfolio-skins",
+    repo: "https://github.com/reneebe/portfolio-skins",
+    completed: true,
+  },
+  ...Array.from({ length: 48 }, (_, i) => ({
+    day: i + 3,
+    title: `Day ${i + 3}`,
     completed: false,
   })),
 ];

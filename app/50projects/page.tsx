@@ -16,7 +16,7 @@ export default function FiftyProjectsPage() {
       </div>
       <h1
         className="mb-4 text-5xl font-black tracking-tight text-white sm:text-6xl"
-        style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+        style={{ fontFamily: "var(--font-heading)" }}
       >
         50 Projects
         <br />

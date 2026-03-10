@@ -59,7 +59,7 @@ function StackCard({
           <p className="text-xs font-mono text-white/30 uppercase tracking-widest">Stack</p>
           <h3
             className="text-base font-bold text-white"
-            style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             {title}
           </h3>
@@ -88,7 +88,7 @@ export default function About() {
         <div>
           <h2
             className="mb-6 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl"
-            style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             I build products,
             <br />

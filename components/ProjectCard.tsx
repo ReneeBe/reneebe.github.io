@@ -41,7 +41,7 @@ export default function ProjectCard({ project, index }: Props) {
 
       <h3
         className="mb-2 text-lg font-bold text-white"
-        style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+        style={{ fontFamily: "var(--font-heading)" }}
       >
         {project.title}
       </h3>

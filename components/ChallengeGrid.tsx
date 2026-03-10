@@ -16,7 +16,7 @@ export default function ChallengeGrid({ projects }: Props) {
           <div>
             <span
               className="text-3xl font-black gradient-text"
-              style={{ fontFamily: "var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif" }}
+              style={{ fontFamily: "var(--font-heading)" }}
             >
               {completed}
             </span>
