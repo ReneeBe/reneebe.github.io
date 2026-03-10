@@ -81,6 +81,7 @@ export default function ThemeSwitcher() {
         emoji: "✨",
         vars,
       });
+      setCustomText("");
       setOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
@@ -162,6 +163,15 @@ export default function ThemeSwitcher() {
               >
                 {current.name}
               </span>
+              <div className="flex gap-0.5">
+                {(["--grad-a", "--grad-b", "--grad-c", "--grad-d"] as const).map((k) => (
+                  <div
+                    key={k}
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ background: current.vars[k] }}
+                  />
+                ))}
+              </div>
             </div>
           )}
 
