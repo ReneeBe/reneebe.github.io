@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { themes, defaultTheme, type Theme, type ThemeVars } from "@/lib/themes";
 
 // Update this after deploying the Cloudflare Worker
-const AI_ENDPOINT = "https://portfolio-skins-ai.YOUR_SUBDOMAIN.workers.dev";
+const AI_ENDPOINT = "https://portfolio-skins-ai.reneebe.workers.dev";
 
 export default function ThemeSwitcher() {
   const [current, setCurrent] = useState<Theme>(defaultTheme);
