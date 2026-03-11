@@ -23,9 +23,16 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/reneebe/portfolio-skins",
     completed: true,
   },
-  ...Array.from({ length: 48 }, (_, i) => ({
-    day: i + 3,
-    title: `Day ${i + 3}`,
+  {
+    day: 3,
+    title: "Nano Claude Theme Manager",
+    description: "Cloudflare Worker that chains Gemini image generation + Claude vision to produce ThemeVars JSON from a text description.",
+    repo: "https://github.com/ReneeBe/nano-claude-theme-manager",
+    completed: true,
+  },
+  ...Array.from({ length: 47 }, (_, i) => ({
+    day: i + 4,
+    title: `Day ${i + 4}`,
     completed: false,
   })),
 ];
