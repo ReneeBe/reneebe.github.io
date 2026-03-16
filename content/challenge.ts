@@ -30,7 +30,15 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/nano-claude-theme-manager",
     completed: true,
   },
-  ...Array.from({ length: 47 }, (_, i) => ({
+  {
+    day: 4,
+    title: "Theme Generator",
+    description: "Vite/React UI for AI theme generation — describe a vibe, get a full UI theme powered by Gemini + Claude.",
+    url: "https://reneebe.github.io/theme-generator",
+    repo: "https://github.com/ReneeBe/theme-generator",
+    completed: true,
+  },
+  ...Array.from({ length: 46 }, (_, i) => ({
     day: i + 4,
     title: `Day ${i + 4}`,
     completed: false,
