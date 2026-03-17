@@ -42,6 +42,7 @@ export const challengeProjects: ChallengeProject[] = [
     day: 5,
     title: "Theme Extension",
     description: "Chrome extension that injects AI-generated CSS themes into any website with one click.",
+    url: "https://reneebe.github.io/theme-extension",
     repo: "https://github.com/ReneeBe/theme-extension",
     completed: true,
   },
