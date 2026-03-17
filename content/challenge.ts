@@ -38,9 +38,16 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/theme-generator",
     completed: true,
   },
-  ...Array.from({ length: 46 }, (_, i) => ({
-    day: i + 4,
-    title: `Day ${i + 4}`,
+  {
+    day: 5,
+    title: "Theme Extension",
+    description: "Chrome extension that injects AI-generated CSS themes into any website with one click.",
+    repo: "https://github.com/ReneeBe/theme-extension",
+    completed: true,
+  },
+  ...Array.from({ length: 45 }, (_, i) => ({
+    day: i + 6,
+    title: `Day ${i + 6}`,
     completed: false,
   })),
 ];
