@@ -46,9 +46,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/theme-extension",
     completed: true,
   },
-  ...Array.from({ length: 45 }, (_, i) => ({
-    day: i + 6,
-    title: `Day ${i + 6}`,
+  {
+    day: 6,
+    title: "Accessibility Auditor",
+    description: "Paste a React component and get a list of WCAG 2.2 issues detected via static AST analysis. No backend, no AI — pure client-side.",
+    url: "/tools/accessibility-auditor/",
+    repo: "https://github.com/reneebe/accessibilityAuditor",
+    completed: true,
+  },
+  ...Array.from({ length: 44 }, (_, i) => ({
+    day: i + 7,
+    title: `Day ${i + 7}`,
     completed: false,
   })),
 ];
