@@ -61,9 +61,24 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/persist",
     completed: true,
   },
-  ...Array.from({ length: 43 }, (_, i) => ({
-    day: i + 8,
-    title: `Day ${i + 8}`,
+  {
+    day: 8,
+    title: "Brain Dump Scheduler",
+    description: "Paste a free-form brain dump and Claude extracts, prioritizes, and schedules your tasks into a timeline view.",
+    url: "https://reneebe.github.io/brain-dump-scheduler",
+    repo: "https://github.com/ReneeBe/brain-dump-scheduler",
+    completed: true,
+  },
+  {
+    day: 9,
+    title: "Type Speed Test",
+    description: "A typing speed test with live WPM, accuracy, and error tracking. Dark and light mode included.",
+    repo: "https://github.com/ReneeBe/type-speed-test",
+    completed: true,
+  },
+  ...Array.from({ length: 41 }, (_, i) => ({
+    day: i + 10,
+    title: `Day ${i + 10}`,
     completed: false,
   })),
 ];
