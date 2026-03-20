@@ -54,9 +54,16 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/reneebe/accessibilityAuditor",
     completed: true,
   },
-  ...Array.from({ length: 44 }, (_, i) => ({
-    day: i + 7,
-    title: `Day ${i + 7}`,
+  {
+    day: 7,
+    title: "Persist",
+    description: "Chrome extension + Cloudflare Worker that captures full page context and lets you selectively share it with AI agents via REST or MCP.",
+    repo: "https://github.com/ReneeBe/persist",
+    completed: true,
+  },
+  ...Array.from({ length: 43 }, (_, i) => ({
+    day: i + 8,
+    title: `Day ${i + 8}`,
     completed: false,
   })),
 ];
