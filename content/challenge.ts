@@ -65,6 +65,7 @@ export const challengeProjects: ChallengeProject[] = [
     day: 8,
     title: "Brain Dump Scheduler",
     description: "Paste a free-form brain dump and Claude extracts, prioritizes, and schedules your tasks into a timeline view.",
+    url: "https://reneebe.github.io/brain-dump-scheduler",
     repo: "https://github.com/ReneeBe/brain-dump-scheduler",
     completed: true,
   },
