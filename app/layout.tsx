@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, Orbitron, Lora, Pacifico } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -70,6 +71,7 @@ export default function RootLayout({
         <div className="relative z-10">
           <Nav />
           <main className="pt-20">{children}</main>
+          <Footer />
         </div>
       </body>
     </html>
