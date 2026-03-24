@@ -80,9 +80,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/type-speed-test",
     completed: true,
   },
-  ...Array.from({ length: 41 }, (_, i) => ({
-    day: i + 10,
-    title: `Day ${i + 10}`,
+  {
+    day: 10,
+    title: "Pomodoro Timer",
+    description: "Customizable Pomodoro timer with configurable focus and break durations, and separate alarm sound selection for each mode.",
+    url: "https://reneebe.github.io/pomodoro-timer/",
+    repo: "https://github.com/ReneeBe/pomodoro-timer",
+    completed: true,
+  },
+  ...Array.from({ length: 40 }, (_, i) => ({
+    day: i + 11,
+    title: `Day ${i + 11}`,
     completed: false,
   })),
 ];
