@@ -73,8 +73,9 @@ export const challengeProjects: ChallengeProject[] = [
     day: 9,
     title: "Type Speed Test",
     description: "A typing speed test with live WPM, accuracy, and error tracking. Dark and light mode included.",
+    url: "https://reneebe.github.io/type-speed-test/",
     repo: "https://github.com/ReneeBe/type-speed-test",
-    completed: false,
+    completed: true,
   },
   ...Array.from({ length: 41 }, (_, i) => ({
     day: i + 10,
