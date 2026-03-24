@@ -80,23 +80,36 @@ export default function ChallengeGrid({ projects }: Props) {
                 {String(project.day).padStart(2, "0")}
               </span>
               {project.completed && (
-                <span
-                  className="line-clamp-2 text-[9px] font-medium leading-tight"
-                  style={{ color: "color-mix(in srgb, var(--foreground) 60%, transparent)" }}
-                >
-                  {project.title}
-                </span>
+                <div className="flex w-full flex-col gap-0.5">
+                  <span
+                    className="line-clamp-2 text-[9px] font-medium leading-tight"
+                    style={{ color: "color-mix(in srgb, var(--foreground) 60%, transparent)" }}
+                  >
+                    {project.title}
+                  </span>
+                  {project.pendingStore && (
+                    <span
+                      className="text-[7px] font-mono font-bold leading-tight"
+                      style={{ color: accent, opacity: 0.7 }}
+                    >
+                      coming soon
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           );
 
-          return project.completed && project.url ? (
+          const href = project.pendingStore ? project.repo : project.url;
+
+          return project.completed && href ? (
             <a
               key={project.day}
-              href={project.url}
+              href={href}
               target="_blank"
               rel="noopener noreferrer"
               className="block"
+              title={project.pendingStore ? "GitHub · Chrome Store approval pending — extension coming soon" : undefined}
             >
               {inner}
             </a>
