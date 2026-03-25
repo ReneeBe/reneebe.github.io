@@ -76,9 +76,25 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/type-speed-test",
     completed: false,
   },
-  ...Array.from({ length: 41 }, (_, i) => ({
-    day: i + 10,
-    title: `Day ${i + 10}`,
+  {
+    day: 10,
+    title: "Pomodoro Timer",
+    description: "Customizable Pomodoro timer with configurable focus and break durations, and separate alarm sound selection for each mode.",
+    url: "https://reneebe.github.io/pomodoro-timer/",
+    repo: "https://github.com/ReneeBe/pomodoro-timer",
+    completed: true,
+  },
+  {
+    day: 11,
+    title: "AI Video Searcher",
+    description: "Upload a video and search for any moment using plain English. Powered by Gemini.",
+    url: "https://reneebe.github.io/ai-video-searcher/",
+    repo: "https://github.com/ReneeBe/ai-video-searcher",
+    completed: true,
+  },
+  ...Array.from({ length: 39 }, (_, i) => ({
+    day: i + 12,
+    title: `Day ${i + 12}`,
     completed: false,
   })),
 ];
