@@ -5,6 +5,7 @@ export type ChallengeProject = {
   url?: string;
   repo?: string;
   completed: boolean;
+  pendingStore?: boolean;
 };
 
 export const challengeProjects: ChallengeProject[] = [
@@ -45,6 +46,7 @@ export const challengeProjects: ChallengeProject[] = [
     url: "https://reneebe.github.io/theme-extension",
     repo: "https://github.com/ReneeBe/theme-extension",
     completed: true,
+    pendingStore: true,
   },
   {
     day: 6,
@@ -60,6 +62,7 @@ export const challengeProjects: ChallengeProject[] = [
     description: "Chrome extension + Cloudflare Worker that captures full page context and lets you selectively share it with AI agents via REST or MCP.",
     repo: "https://github.com/ReneeBe/persist",
     completed: true,
+    pendingStore: true,
   },
   {
     day: 8,
@@ -73,8 +76,9 @@ export const challengeProjects: ChallengeProject[] = [
     day: 9,
     title: "Type Speed Test",
     description: "A typing speed test with live WPM, accuracy, and error tracking. Dark and light mode included.",
+    url: "https://reneebe.github.io/type-speed-test/",
     repo: "https://github.com/ReneeBe/type-speed-test",
-    completed: false,
+    completed: true,
   },
   {
     day: 10,
