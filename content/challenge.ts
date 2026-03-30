@@ -96,9 +96,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/ai-video-searcher",
     completed: true,
   },
-  ...Array.from({ length: 39 }, (_, i) => ({
-    day: i + 12,
-    title: `Day ${i + 12}`,
+  {
+    day: 12,
+    title: "Photo Location Quiz",
+    description: "Upload your iPhone camera roll and guess where each photo was taken. GPS extraction, reverse geocoding, and AI-generated decoy cities.",
+    url: "https://reneebe.github.io/photo-location-quiz/",
+    repo: "https://github.com/ReneeBe/photo-location-quiz",
+    completed: true,
+  },
+  ...Array.from({ length: 38 }, (_, i) => ({
+    day: i + 13,
+    title: `Day ${i + 13}`,
     completed: false,
   })),
 ];
