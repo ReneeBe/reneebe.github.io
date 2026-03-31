@@ -1,0 +1,61 @@
+---
+title: "Day 12 — Photo Location Quiz, or: Can You Remember Where You've Been?"
+date: "2026-03-27"
+excerpt: "I built a web game that turns your iPhone camera roll into a geography quiz. The biggest challenge wasn't the quiz — it was convincing browsers to read GPS data from photos."
+tags: ["day-12", "ai", "gemini", "geolocation", "react"]
+---
+
+The idea hit me while scrolling through old photos on my phone. I could recognize the food, the people, the vibe — but had absolutely no idea what city I was in when I took half of them. That felt like a game.
+
+[Play it here](https://reneebe.github.io/photo-location-quiz/) if you want to find out how well you know your own travels.
+
+## What It Does
+
+You upload photos from your camera roll (up to 100 at a time), and the app extracts the GPS coordinates baked into each image. It reverse-geocodes those coordinates to city names, then uses Gemini to categorize the photos — food, sunset, nature, cityscape, architecture, and so on.
+
+From there you pick which categories you want to quiz yourself on, and the game begins. Each round shows you a photo and four city options. Pick where you think it was taken. Scoring is distance-based: a perfect guess earns 5,000 points, and partial credit scales down to zero at 5,000 km away, so you're never punished for being in the right region.
+
+After ten questions, you get a results screen with your total score, a medal tier, and a full breakdown of every answer.
+
+## The Stack
+
+- Vite + React + TypeScript, deployed to GitHub Pages
+- [`exifr`](https://github.com/MikeKovarik/exifr) for client-side GPS extraction
+- [Nominatim](https://nominatim.org/) (OpenStreetMap) for free reverse geocoding — no API key, but rate-limited to one request per second
+- Gemini (`gemini-2.5-pro-preview`) for photo categorization and generating plausible decoy cities
+
+Everything runs in the browser. No backend, no server, no data leaves your device except the Gemini API calls (which send a resized thumbnail, not the original).
+
+## Where It Got Complicated
+
+### Most Photos Don't Have GPS
+
+This was the first real surprise. I uploaded 100 photos — mostly food — and the app found exactly one with GPS data.
+
+Turns out GPS gets stripped in a lot of common situations: photos shared over iMessage, saved from Instagram, screenshots, anything run through a compression pipeline. Even photos taken on your iPhone won't have GPS if Location Services for the Camera app is off or set to "Never."
+
+I added two things to handle this gracefully. First, live progress feedback: as photos process, the UI shows how many have survived each stage — GPS extraction, geocoding, categorization. So instead of getting a confusing empty state at the end, you can see the drop-off happening in real time. Second, a detailed error message when no GPS is found, explaining exactly where to check your settings and why food photos from your camera roll might not have location data.
+
+### The GPS Extraction Fallback
+
+`exifr` has a dedicated `.gps()` helper that's fast and clean, but it missed some photos that technically had GPS data embedded under a slightly different IFD layout. The fix was to try `.gps()` first, then fall back to a full `.parse(file, { gps: true })` call. Small change, meaningful improvement in coverage.
+
+### Frozen Questions
+
+After fixing the GPS issues, I hit a subtler bug: the quiz would get stuck on question 2. You'd answer, the score would update, but the question wouldn't change. The photo was different but the selected answer state from the previous question was still highlighted.
+
+The cause was React not remounting the `QuizQuestionView` component between questions — it was reusing the same component instance and just passing new props, so the internal `chosen` state persisted. The fix was one line: adding `key={currentQ}` to the component. React treats a changed `key` as a new component entirely, so state resets cleanly on every question.
+
+### Decoy City Generation
+
+Generating good wrong answers is harder than it sounds. You don't want decoys that are obviously wrong (suggesting "Nome, Alaska" when the photo is clearly tropical). You also don't want them to be too close to the real answer — if the correct city is Barcelona, you probably shouldn't offer Madrid as a decoy.
+
+I gave Gemini the real city, country, and coordinates and asked it to return three plausible-but-wrong alternatives that fit the general region and vibe. It does a surprisingly good job. The result is a quiz that's genuinely hard — not because it's random, but because the wrong answers feel like places you might have actually been.
+
+## What I Learned
+
+Client-side GPS extraction is way less reliable than I expected. The `exifr` library is well-built, but the underlying problem is that most photos people have on their phones have already had metadata stripped by the time they try to upload them. If I were building this for a wider audience, I'd want to set expectations upfront and maybe suggest using the HEIC originals directly from the Files app rather than photos shared through social apps.
+
+The distance-based scoring was also more satisfying than I anticipated. A pure right/wrong quiz would punish you harshly for reasonable guesses ("I thought it was Lyon, not Paris"). Partial credit makes the game feel fair and keeps the tension interesting even when you know you're wrong.
+
+The "Add more photos" feature came out of real usage: processing 100 photos takes a couple of minutes, and if none of them have GPS, you want to try another batch without starting over. Adding that feature mid-build was easy because the state was already centralized in `App.tsx` — it was just a matter of merging the new batch into the existing array.
