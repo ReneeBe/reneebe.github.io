@@ -111,9 +111,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/idea-explorer",
     completed: true,
   },
-  ...Array.from({ length: 37 }, (_, i) => ({
-    day: i + 14,
-    title: `Day ${i + 14}`,
+  {
+    day: 14,
+    title: "Project Peek",
+    description: "A reusable React component for portfolio project cards — click to peek at the description, demo, repo, and blog post. Published as an npm package.",
+    url: "https://reneebe.github.io/project-peek/",
+    repo: "https://github.com/ReneeBe/project-peek",
+    completed: true,
+  },
+  ...Array.from({ length: 36 }, (_, i) => ({
+    day: i + 15,
+    title: `Day ${i + 15}`,
     completed: false,
   })),
 ];
