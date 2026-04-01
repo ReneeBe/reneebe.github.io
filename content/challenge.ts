@@ -46,7 +46,6 @@ export const challengeProjects: ChallengeProject[] = [
     url: "https://chromewebstore.google.com/detail/theme-generator/nmbpjgbbogokabhnmkonpgfeglebeidi",
     repo: "https://github.com/ReneeBe/theme-extension",
     completed: true,
-    pendingStore: true,
   },
   {
     day: 6,
