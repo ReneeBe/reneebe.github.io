@@ -1,0 +1,51 @@
+---
+title: "Day 13 — Idea Explorer, or: Building the Tool I Needed to Build the Tools"
+date: "2026-03-31"
+excerpt: "I needed a way to brainstorm ideas for the remaining 37 projects in my 50-day challenge. So I built one: a spatial concept map powered by Claude that lets you drill from a vague topic all the way down to a specific, actionable idea."
+tags: ["day-13", "ai", "claude", "react", "visualization"]
+---
+
+By day 13 of a 50-project challenge, I had started running out of ideas for what to build next. The irony wasn't lost on me: I had Claude at my disposal, a blank canvas, and no shortage of technical skills — and yet I kept staring at a blank page every morning trying to figure out what to make.
+
+So I built a tool to fix that. [Idea Explorer](https://reneebe.github.io/idea-explorer/) is a spatial concept map powered by Claude. You enter a topic, answer a couple of follow-up questions, and get an interactive graph of ideas you can keep drilling into until you land on something concrete.
+
+## How It Works
+
+The flow is three steps:
+
+1. **Enter a topic** — something like "vegetarian meal plan ideas" or "50-day project ideas"
+2. **Answer follow-up questions** — Claude asks 1-2 targeted questions to understand your angle (answers are optional)
+3. **Explore the map** — Claude generates 6-8 starting ideas radiating out from your topic; click any node to expand it with more specific ideas; keep drilling
+
+The map is built with [React Flow](https://reactflow.dev/), which handles the node/edge rendering, pan/zoom, and drag-to-reposition. Claude does the ideation. Each node fans out from its parent at an angle, so the spatial layout stays readable as you explore.
+
+## The Topics vs. Ideas Problem
+
+The first version had a real problem: it was surfacing topics, not ideas.
+
+I'd enter "vegetarian meal plan ideas" and get back nodes like *weekly batch cooking*, *seasonal produce rotation*, and *vegan vs. lacto-ovo*. Those aren't ideas — they're organizational categories. You can't cook "seasonal produce rotation." It's the kind of structure you'd use to write a Wikipedia article, not brainstorm dinner.
+
+What I actually wanted was: *Italian cuisine*, *high-protein vegetarian meals*, *seitan recipes*. Things I could click into and drill further — eventually reaching something like *tofu with cilantro lime rice and beans*.
+
+The fix was entirely in the prompt framing. The original prompts asked Claude to generate "the most important dimensions, aspects, or related ideas" — classic outline-brain language. The new prompts ask for "specific, concrete ideas within X" that are "actual ideas, dishes, projects, recipes, names, or things you could act on." It also explicitly tells Claude the user wants to "drill all the way down to a single concrete idea."
+
+Same model, completely different output. Prompt engineering really is most of the job sometimes.
+
+## The Follow-Up Questions
+
+Before generating the map, Claude asks 1-2 clarifying questions. For "vegetarian meal plan ideas" it might ask: *Are you cooking for one or a family?* and *Do you have any dietary restrictions beyond vegetarian (dairy-free, gluten-free, etc.)?*
+
+Those answers get folded into the system context for the root generation call, so the first ring of ideas is already calibrated to your situation. If you skip the answers and just hit "Build map," you get a reasonable generic starting point.
+
+## What It's Actually Good For
+
+I've been using it exactly as intended — coming up with project ideas for the challenge. Starting with "developer tools that would actually be useful" and drilling into branches like "AI-assisted code review," "local-first productivity tools," and "browser extensions," each of which branches further into specific ideas. It's faster than a blank page and more interesting than asking Claude to just "give me 20 project ideas."
+
+The spatial layout matters more than I expected. Seeing which ideas cluster together and which ones sit in isolation reveals something about the problem space that a flat list doesn't. The map isn't just a UI novelty — the positions carry meaning once you've been exploring for a few minutes.
+
+## Stack
+
+- Vite + React + TypeScript + Tailwind CSS v4
+- [React Flow](https://reactflow.dev/) for the interactive graph
+- Claude (`claude-opus-4-6`) for follow-up questions, root concept generation, and node expansion
+- Deployed to GitHub Pages via Actions

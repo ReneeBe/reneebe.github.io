@@ -103,9 +103,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/photo-location-quiz",
     completed: true,
   },
-  ...Array.from({ length: 38 }, (_, i) => ({
-    day: i + 13,
-    title: `Day ${i + 13}`,
+  {
+    day: 13,
+    title: "Idea Explorer",
+    description: "Spatial concept map powered by Claude. Enter a topic, answer two follow-up questions, and explore ideas as an interactive graph you can keep drilling into.",
+    url: "https://reneebe.github.io/idea-explorer/",
+    repo: "https://github.com/ReneeBe/idea-explorer",
+    completed: true,
+  },
+  ...Array.from({ length: 37 }, (_, i) => ({
+    day: i + 14,
+    title: `Day ${i + 14}`,
     completed: false,
   })),
 ];
