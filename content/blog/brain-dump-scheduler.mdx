@@ -1,0 +1,28 @@
+---
+title: "Day 08 — Turning a Wall of Text into a Schedule"
+date: "2026-03-20"
+excerpt: "A three-phase app that takes your free-form brain dump and hands back an organized task list with dates, durations, and priority buckets. The interesting part was the prompt design."
+tags: ["day-08", "ai", "claude", "productivity"]
+---
+
+The premise is simple: sometimes your head is full and you need to get everything out before you can think clearly. Brain Dump Scheduler takes that raw text and does the organization work for you.
+
+## The Three Phases
+
+The app moves through three steps. In the first phase you just type — anything, in any format. A wall of sentences, a half-finished list, sentence fragments. The goal is to capture, not to organize.
+
+Claude then extracts every actionable task from the text and returns structured data: a title, description, estimated duration in minutes, a suggested date and time if the text implied one, an urgency level, and a category. The prompt is strict about not hallucinating — if you didn't mention it, it shouldn't appear.
+
+The second phase is the prioritization board. Tasks land in one of three buckets — **Today**, **This Week**, or **Later** — based on the urgency and suggested date Claude inferred. You can drag them between buckets if Claude got something wrong.
+
+The third phase is the timeline: a clean day-by-day schedule built from whatever ended up in Today and This Week.
+
+## The Prompt
+
+Most of the interesting design work here was in the extraction prompt. The schema is specific — I wanted dates as ISO strings, durations as integers, urgency as a strict enum — and Claude returns a raw JSON array with no markdown fences. There's a cleanup step to strip accidental fences anyway, but it rarely fires.
+
+Getting Claude to infer "reasonable" durations without over- or under-estimating took a few iterations. The final prompt sets a floor of 5 minutes and a ceiling of 8 hours and gives Claude enough context to make sensible calls based on what the task actually is.
+
+## Why
+
+This was the week I started running low on ideas for the 50 projects challenge (which is partly why Day 13 became an idea explorer). Brain Dump Scheduler came from a personal need — I had too many things competing for attention and wanted a way to dump them all and get back a prioritized list without the overhead of manually triaging everything.
