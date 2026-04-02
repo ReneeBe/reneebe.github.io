@@ -1,10 +1,17 @@
+"use client";
+
+import { useState } from "react";
 import type { ChallengeProject } from "@/content/challenge";
+import { ProjectPeekModal } from "./ProjectPeekModal";
 
 const accentColors = ["#f72585", "#7209b7", "#3a86ff", "#06d6a0"];
 
-type Props = { projects: ChallengeProject[] };
+type ProjectWithBlog = ChallengeProject & { blogSlug?: string };
+type Props = { projects: ProjectWithBlog[] };
 
 export default function ChallengeGrid({ projects }: Props) {
+  const [active, setActive] = useState<ProjectWithBlog | null>(null);
+
   const completed = projects.filter((p) => p.completed).length;
   const pct = Math.round((completed / 50) * 100);
 
@@ -54,9 +61,8 @@ export default function ChallengeGrid({ projects }: Props) {
         {projects.map((project) => {
           const accent = accentColors[(project.day - 1) % accentColors.length];
 
-          const inner = (
+          const cardInner = (
             <div
-              key={project.day}
               className={`flex aspect-square flex-col items-start justify-between rounded-xl p-2 transition-all duration-300 ${
                 project.completed ? "hover:-translate-y-1" : ""
               }`}
@@ -100,24 +106,29 @@ export default function ChallengeGrid({ projects }: Props) {
             </div>
           );
 
-          const href = project.pendingStore ? project.repo : project.url;
-
-          return project.completed && href ? (
-            <a
+          return project.completed ? (
+            <button
               key={project.day}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-              title={project.pendingStore ? "GitHub · Chrome Store approval pending — extension coming soon" : undefined}
+              className="block text-left"
+              onClick={() => setActive(project)}
+              title={project.title}
             >
-              {inner}
-            </a>
+              {cardInner}
+            </button>
           ) : (
-            <div key={project.day}>{inner}</div>
+            <div key={project.day}>{cardInner}</div>
           );
         })}
       </div>
+
+      {/* Modal */}
+      {active && (
+        <ProjectPeekModal
+          project={active}
+          accent={accentColors[(active.day - 1) % accentColors.length]}
+          onClose={() => setActive(null)}
+        />
+      )}
     </div>
   );
 }
