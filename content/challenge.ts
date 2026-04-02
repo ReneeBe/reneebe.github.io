@@ -52,7 +52,7 @@ export const challengeProjects: ChallengeProject[] = [
     title: "Accessibility Auditor",
     description: "Paste a React component and get a list of WCAG 2.2 issues detected via static AST analysis. No backend, no AI — pure client-side.",
     url: "/tools/accessibility-auditor/",
-    repo: "https://github.com/reneebe/accessibilityAuditor",
+    repo: "https://github.com/ReneeBe/accessibilityAuditor",
     completed: true,
   },
   {
