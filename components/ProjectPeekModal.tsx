@@ -18,7 +18,8 @@ export function ProjectPeekModal({ project, accent, onClose }: Props) {
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const demoHref = project.pendingStore ? undefined : project.url;
+  const demoHref = project.url;
+  const isStoreLink = demoHref?.includes("chromewebstore.google.com");
   const repoHref = project.repo;
   const blogHref = project.blogSlug ? `/blog/${project.blogSlug}` : undefined;
 
@@ -98,18 +99,7 @@ export function ProjectPeekModal({ project, accent, onClose }: Props) {
               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
               style={{ background: accent, color: "#fff" }}
             >
-              ↗ Live demo
-            </a>
-          )}
-          {project.pendingStore && project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
-              style={{ background: accent, color: "#fff" }}
-            >
-              ↗ Chrome Web Store
+              ↗ {isStoreLink ? "Chrome Web Store" : "Live demo"}
             </a>
           )}
           {repoHref && (
