@@ -59,9 +59,9 @@ export const challengeProjects: ChallengeProject[] = [
     day: 7,
     title: "Persist",
     description: "Chrome extension + Cloudflare Worker that captures full page context and lets you selectively share it with AI agents via REST or MCP.",
+    url: "https://chromewebstore.google.com/detail/persist/jjcahbgnbbnkflafdbbhimpdfpaibelo",
     repo: "https://github.com/ReneeBe/persist",
     completed: true,
-    pendingStore: true,
   },
   {
     day: 8,
