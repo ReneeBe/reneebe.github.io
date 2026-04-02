@@ -1,0 +1,35 @@
+---
+title: "Day 07 — Building a Memory Layer for AI Agents"
+date: "2026-03-19"
+excerpt: "A Chrome extension that captures page context and shares it with AI agents via REST or MCP. The interesting part wasn't the extension — it was building an MCP server into the same Cloudflare Worker."
+tags: ["day-07", "ai", "mcp", "cloudflare", "chrome-extension"]
+---
+
+Most AI tools have a context problem. You're working in a browser, looking at a page full of relevant information, and the AI you're talking to has no idea it exists. You either copy-paste chunks of it manually, or you describe it in rough terms and hope that's enough.
+
+Persist is my attempt at a lightweight fix. A Chrome extension that captures page context — URL, title, full text — and saves it to a personal Cloudflare Worker. From there, any AI agent can read what you've shared, either via a simple REST API or an MCP server built into the same worker.
+
+## The Extension Side
+
+The popup is a small React UI that shows the current page and lets you save it with one click. A content script runs on every page and handles the actual DOM extraction — pulling the readable text content rather than the raw HTML. Saved items get sent to the worker with a write token for auth.
+
+The selective part matters. The extension doesn't automatically capture everything you visit — you choose what to share. That keeps the context store small and relevant rather than a noisy log of every tab you've opened.
+
+## The MCP Side
+
+The more interesting piece was building an MCP server directly into the Cloudflare Worker. MCP (Model Context Protocol) is Anthropic's open standard for connecting AI agents to external tools and data sources. Instead of building a one-off integration, you expose a standardized interface that any MCP-compatible client can connect to.
+
+The worker's `/mcp` endpoint handles the full JSON-RPC protocol and exposes two tools:
+
+- `list_context` — returns all shared items with their URL, title, and capture timestamp
+- `get_item` — fetches the full text content of a specific item by ID
+
+Both tools require a read token, so the context store stays private. The write token (used by the extension) is separate from the read token, so you could give an agent read access without giving it the ability to write.
+
+The whole MCP implementation sits alongside the REST endpoints in the same ~200-line worker. One deploy, two ways to access the same data.
+
+## What It's Actually For
+
+The immediate use case was giving Claude Code access to pages I'm referencing while building. Instead of pasting docs or error messages into the chat, I save the page from the extension and point the agent at the MCP endpoint. It reads what I've shared without me having to think about formatting or truncation.
+
+It's a small thing, but it removes a lot of friction from the "context switching between browser and terminal" loop that makes AI-assisted development feel clunky.
