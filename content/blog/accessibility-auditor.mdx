@@ -1,0 +1,50 @@
+---
+title: "Day 06 — Building an Accessibility Linter Without a Linter"
+date: "2026-03-18"
+excerpt: "What happens when you skip the AI and build a static analysis tool from scratch using nothing but a Babel AST and a set of rules you write yourself."
+tags: ["day-06", "accessibility", "react", "ast", "no-ai"]
+---
+
+Every project so far had involved an AI API, a Cloudflare Worker, or both. Day 6 was a deliberate change of pace: build something useful with none of that.
+
+The Accessibility Auditor is a tool where you paste in a React component and get back a list of WCAG 2.2 violations — missing alt text, unlabeled inputs, buttons with no accessible name, click handlers without keyboard equivalents. No backend, no AI, no API calls. Just a Babel parser, a tree walker, and a set of rules running entirely in the browser.
+
+## Why Not Use an Existing Linter
+
+The honest answer is that this was a learning exercise as much as a tool. `eslint-plugin-jsx-a11y` exists and covers this problem well. But I wanted to understand how static analysis actually works — how you go from a string of JSX to a list of specific violations with line numbers.
+
+Building it from scratch meant I had to think through every rule explicitly: what does "button has no accessible name" actually mean in terms of the AST? A button is inaccessible if it has no text content, no `aria-label`, no `aria-labelledby`, and no `title`. Each of those is a different thing to check in the tree.
+
+## How the AST Analysis Works
+
+The flow is straightforward:
+
+1. The component source gets parsed by `@babel/parser` into an AST
+2. A walker traverses every JSX element in the tree
+3. Each rule function receives the element and its attributes and returns a violation or null
+4. Violations get collected, deduped, and displayed with the element type, rule name, and line number
+
+The rules themselves are small, focused functions. `img-alt.js` checks whether an `<img>` has an `alt` prop that isn't empty. `button-name.js` checks for text content or any of the aria labeling attributes. `click-events-have-key-events.js` checks whether anything with an `onClick` also has `onKeyDown` or `onKeyPress`.
+
+Writing them felt more like writing unit tests than writing a parser — each rule is just pattern matching against a node.
+
+## What It Catches
+
+Eight rules shipped:
+
+- Images missing `alt`
+- Buttons with no accessible name
+- Anchor tags with no text content
+- Inputs without associated labels
+- Click handlers on non-interactive elements without keyboard equivalents
+- Interactive elements that aren't focusable
+- `aria-hidden` on focusable elements
+- Positive `tabIndex` values
+
+That last one is subtle: `tabIndex="1"` doesn't just add an element to the tab order, it jumps it to the front, breaking the natural reading order for keyboard users. It's one of those rules that looks harmless and causes real problems.
+
+## What I'd Add
+
+The most obvious gap is context. Some rules produce false positives without it — an `<img>` with `role="presentation"` doesn't need an alt text, but the current rule flags it anyway. A more complete implementation would handle ARIA roles, inherited attributes, and component boundaries.
+
+But for a day project, eight rules that actually run in the browser and catch real issues felt like the right scope.
