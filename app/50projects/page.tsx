@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { challengeProjects } from "@/content/challenge";
+import { getAllPosts } from "@/lib/posts";
 import ChallengeGrid from "@/components/ChallengeGrid";
 
 export const metadata: Metadata = {
@@ -8,6 +9,22 @@ export const metadata: Metadata = {
 };
 
 export default function FiftyProjectsPage() {
+  // Build a map from day number → blog slug using the day-XX tag on each post
+  const posts = getAllPosts();
+  const dayToBlogSlug: Record<number, string> = {};
+  for (const post of posts) {
+    const dayTag = post.tags.find((t) => /^day-\d+$/.test(t));
+    if (dayTag) {
+      const day = parseInt(dayTag.replace("day-", ""), 10);
+      dayToBlogSlug[day] = post.slug;
+    }
+  }
+
+  const projects = challengeProjects.map((p) => ({
+    ...p,
+    blogSlug: dayToBlogSlug[p.day],
+  }));
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-20">
       <div className="mb-4 flex items-center gap-4">
@@ -32,10 +49,10 @@ export default function FiftyProjectsPage() {
         style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}
       >
         One small project every weekday for 50 days. Building instincts, shipping fast,
-        learning in public. Click a completed slot to see the live demo.
+        learning in public. Click any completed project to see details.
       </p>
 
-      <ChallengeGrid projects={challengeProjects} />
+      <ChallengeGrid projects={projects} />
     </div>
   );
 }
