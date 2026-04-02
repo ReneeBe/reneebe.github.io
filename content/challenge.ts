@@ -27,7 +27,7 @@ export const challengeProjects: ChallengeProject[] = [
   {
     day: 3,
     title: "Nano Claude Theme Manager",
-    description: "Cloudflare Worker that chains Gemini image generation + Claude vision to produce ThemeVars JSON from a text description.",
+    description: "Cloudflare Worker (no demo — backend only) that chains Gemini image generation + Claude vision to produce ThemeVars JSON from a text description.",
     repo: "https://github.com/ReneeBe/nano-claude-theme-manager",
     completed: true,
   },
