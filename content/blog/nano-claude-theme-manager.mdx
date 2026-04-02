@@ -1,0 +1,40 @@
+---
+title: "Day 03 — When a Small Project Becomes Infrastructure"
+date: "2026-03-10"
+excerpt: "What started as a quick API wrapper turned into a reusable Cloudflare Worker that other projects would depend on. Sometimes the right move is to build the pipe before the faucet."
+tags: ["day-03", "ai", "cloudflare", "gemini", "claude"]
+---
+
+Day 2 ended with a realization: the Portfolio Skins project had a design problem that couldn't be solved with text alone.
+
+Asking Claude to generate a color theme from a description like "deep sea bioluminescence" worked surprisingly well for colors. But ask it for a background pattern — cow print, leopard, circuit board — and the results ranged from "close but wrong" to "nothing like it." Claude can describe what a pattern looks like. It can write CSS that approximates one. But it can't actually see whether the output looks good, and there's no feedback loop to correct it.
+
+The fix was obvious once I named the problem: bring in an image generation model as a design layer. Let Gemini generate a visual mood board first, then let Claude look at the actual image and extract the theme from that. Real pixels, real colors, real design feedback — instead of a text model making educated guesses about visual output.
+
+That meant I needed a backend.
+
+## Turning It Into Something Reusable
+
+I could have just added the Gemini call directly to the Portfolio Skins worker. One more fetch, done. But by this point the theme generation logic was already being used across two projects and I could see a third coming. Bundling everything into a single project-specific worker felt like it would create a mess to untangle later.
+
+So instead I extracted it into its own Cloudflare Worker: **nano-claude-theme-manager**. A focused, standalone API that takes a text description and returns a `ThemeVars` JSON object. Any project that needs AI-generated themes can just call it.
+
+Making it a separate thing also forced me to be deliberate about the interface. What goes in, what comes out, what the schema is. Designing it as a small standalone service meant the contract stayed clean.
+
+## The Chain
+
+The worker runs two steps:
+
+1. **Gemini generates a color palette mood board** — eight solid color swatches in a grid, with hex codes labeled. The prompt asks for a dark or light background, a contrasting foreground, and six accent colors that fit the described mood.
+
+2. **Gemini generates a tileable background pattern** in the same visual style.
+
+3. **Claude receives both images** and extracts the full `ThemeVars` JSON — background, foreground, gradients, glass effect values, font categories, and the background pattern as a data URI.
+
+The image generation step solves the modality gap from Day 2. Gemini handles the visual imagination. Claude handles extraction and structure. Each model does what it's actually good at.
+
+## Why Cloudflare Workers
+
+Secrets management, mostly. The API keys for both Gemini and Anthropic need to live somewhere that isn't the client-side bundle. Cloudflare Workers make that easy — deploy, set two secrets, done. The worker also handles CORS so any frontend can call it without a proxy.
+
+The whole thing is about 150 lines of JavaScript. Small enough to read in one sitting, useful enough to build two more projects on top of.
