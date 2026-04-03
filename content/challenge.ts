@@ -129,7 +129,7 @@ export const challengeProjects: ChallengeProject[] = [
   },
   {
     day: 16,
-    title: "Haiku",
+    title: "Haiku Generator",
     description: "Describe a feeling, a scene, a moment — and Claude Haiku composes a 5-7-5 haiku. MagicLink demo or bring your own API key.",
     url: "https://reneebe.github.io/haiku/",
     repo: "https://github.com/ReneeBe/haiku",
