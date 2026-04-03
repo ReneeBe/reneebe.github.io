@@ -1,0 +1,24 @@
+---
+title: "Day 11 — Searching a Video with Plain English"
+date: "2026-03-25"
+excerpt: "Upload a video once, then run as many plain-English queries as you want to find specific moments. Built on the Gemini Files API."
+tags: ["day-11", "ai", "gemini", "video"]
+---
+
+I saw a post on Hacker News about Gemini's video understanding capabilities and wanted to try it myself. The frustration of scrubbing through recordings to find a specific moment gave me the use case: what if you could just describe what you're looking for?
+
+## The Gemini Files API
+
+The interesting technical piece here is how Gemini handles video. You don't send video frames inline with your prompt. Instead, you upload the file separately to the Files API and get back a URI that references the processed video on Google's side. After that, every query just sends that URI plus a text prompt. Gemini watches the full video and responds.
+
+This is what makes the "run multiple queries without re-uploading" UX possible. The file lives on Gemini's servers for a short window, so you can ask as many questions as you want in one session without waiting for another upload.
+
+The upload itself uses a resumable protocol: you initiate with a POST, get back an upload URL, then stream the bytes via XHR. XHR is the awkward part (nobody wants to write XHR in 2025), but it's the only browser API that gives you upload progress events, which I needed for the animated progress ring.
+
+After upload, there's a polling step. The file goes through a processing phase before its state becomes `ACTIVE`. The app polls every 2 seconds, up to a 2-minute timeout, before unlocking the query form.
+
+## The Prompt
+
+The query prompt is simple: describe what you're looking for in plain English, and Gemini returns a JSON array of timestamps. Each result has a `MM:SS` string, a `seconds` value for seeking, and a one-sentence description of what's happening at that moment. Clicking any result seeks the video player directly to that second.
+
+The constraint of returning only valid JSON with no markdown is the same pattern from Brain Dump Scheduler. It works well once you're strict about it in the prompt.
