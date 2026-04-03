@@ -125,7 +125,6 @@ export const challengeProjects: ChallengeProject[] = [
     description: "A Cloudflare Worker that issues demo tokens to recruiters, letting them try AI-powered portfolio projects up to 5 times without needing their own API keys.",
     url: "https://magiclink.reneebe.workers.dev",
     repo: "https://github.com/ReneeBe/magiclink",
-    blog: "/blog/magiclink",
     completed: true,
   },
   ...Array.from({ length: 35 }, (_, i) => ({
