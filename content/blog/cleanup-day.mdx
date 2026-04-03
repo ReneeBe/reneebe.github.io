@@ -7,15 +7,15 @@ tags: ["day-14", "meta", "portfolio", "housekeeping"]
 
 Thirteen projects in, and I finally looked at the challenge grid like a stranger would.
 
-Most of the cards are just a title and a small description. Some of those titles are fine — *Pomodoro Timer*, *Type Speed Test*, you know what those are. But *Persist*? *Nano Claude Theme Manager*? *Theme Extension*? Without clicking through, you have no idea what any of those actually do. And clicking through just takes you to the repo, which — as I discovered today — several of them don't have a real README anyway.
+Most of the cards are just a title and a small description. Some of those titles are fine: *Pomodoro Timer*, *Type Speed Test*, you know what those are. But *Persist*? *Nano Claude Theme Manager*? *Theme Extension*? Without clicking through, you have no idea what any of those actually do. And clicking through just takes you to the repo, which, as I discovered today, several of them don't have a real README anyway.
 
 So Day 14 is a cleanup day. A few things I'm fixing.
 
 ## The Project Card Problem
 
-The immediate thing is adding a way to peek at project details without leaving the page. I'm building **Project Peek** — a click-to-expand card that slides up when you click any project in the grid, showing a short blurb, the demo link, the GitHub repo, and a link to the blog post if one exists.
+The immediate thing is adding a way to peek at project details without leaving the page. I'm building **Project Peek**, a click-to-expand card that slides up when you click any project in the grid, showing a short blurb, the demo link, the GitHub repo, and a link to the blog post if one exists.
 
-The interesting wrinkle is that this is portfolio infrastructure, not a standalone app. So I'm going to make it a reusable React component and publish it as an npm package. The Day 14 project *is* the component library — with a demo page showing it in action. That way it counts as a real project and also actually improves the portfolio.
+The interesting wrinkle is that this is portfolio infrastructure, not a standalone app. So I'm going to make it a reusable React component and publish it as an npm package. The Day 14 project *is* the component library, with a demo page showing it in action. That way it counts as a real project and also actually improves the portfolio.
 
 It's a small thing, but it addresses the thing that was actually bothering me: I've built thirteen things and some of them are effectively invisible because the names don't explain them.
 
@@ -33,12 +33,12 @@ So part of today's work is going back through the older projects and writing rea
 
 ## Catching Up on Blog Posts
 
-I'm also behind on blog posts. There are a handful of projects between Day 3 and Day 11 that don't have posts yet. They don't all necessarily warrant a blog post, and I'm not going to post them all today, but I'm going to start catching up over the next few days — filling in the gaps from memory and git history.
+I'm also behind on blog posts. There are a handful of projects between Day 3 and Day 11 that don't have posts yet. They don't all necessarily warrant a blog post, and I'm not going to post them all today, but I'm going to start catching up over the next few days, filling in the gaps from memory and git history.
 
 The blog was always meant to be a development journal, not just a release log. The interesting stuff is the bugs, the wrong turns, the moments where the obvious approach didn't work. Some of that context is still fresh enough to reconstruct; some of it is already fading. Good reminder to write things down closer to when they happen.
 
 ## What Cleanup Days Are Good For
 
-There's a version of a project-a-day challenge where every day is a shiny new thing, and the underlying foundation gradually falls apart. READMEs rot, descriptions go stale, the grid fills up with cards that nobody — including me — can make sense of at a glance.
+There's a version of a project-a-day challenge where every day is a shiny new thing, and the underlying foundation gradually falls apart. READMEs rot, descriptions go stale, the grid fills up with cards that nobody (including me) can make sense of at a glance.
 
 I'd rather spend a day on infrastructure than end up with fifty projects that are technically complete but practically undiscoverable. Day 14 isn't glamorous, but it's the kind of day that makes the other thirteen worth more.
