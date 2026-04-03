@@ -119,9 +119,18 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/project-peek",
     completed: true,
   },
-  ...Array.from({ length: 36 }, (_, i) => ({
-    day: i + 15,
-    title: `Day ${i + 15}`,
+  {
+    day: 15,
+    title: "MagicLink",
+    description: "A Cloudflare Worker that issues demo tokens to recruiters, letting them try AI-powered portfolio projects up to 5 times without needing their own API keys.",
+    url: "https://magiclink.reneebe.workers.dev",
+    repo: "https://github.com/ReneeBe/magiclink",
+    blog: "/blog/magiclink",
+    completed: true,
+  },
+  ...Array.from({ length: 35 }, (_, i) => ({
+    day: i + 16,
+    title: `Day ${i + 16}`,
     completed: false,
   })),
 ];

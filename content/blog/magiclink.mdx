@@ -1,0 +1,53 @@
+---
+title: "Day 15 — MagicLink: Demo Access Without Giving Away Your API Keys"
+date: "2026-04-02"
+excerpt: "Several of my portfolio projects need API keys to run. I didn't want to put my keys in the code and I didn't want to ask recruiters to bring their own. So I built a token system that gives them up to 5 free uses per project."
+tags: ["day-15", "cloudflare", "hono", "chrome-extension", "ai"]
+---
+
+A few weeks in, I had a problem: several of my portfolio projects run on AI APIs that cost money. A recruiter clicking through the live demo would either hit a wall asking for their own API key or get nothing at all. Neither is a great first impression.
+
+The obvious fix is to bake my keys into the app, but that means rotating them every time someone scrapes the source. The slightly less obvious fix is a dedicated demo layer: issue each recruiter a token with a limited number of uses, validate it on the server, and proxy the AI calls using keys that never leave the backend.
+
+That's MagicLink.
+
+## How It Works
+
+A recruiter visits the public landing page and enters their email. The worker generates a 64-character random token, stores it in Cloudflare KV alongside their email address, and shows the link on screen with a copy button. The link is valid for 30 days. Each email address gets one link and can't request another. If they lose it, they email me.
+
+When they click the link, a small SDK script runs on the page, captures the token from the URL query string, saves it to `localStorage`, and cleans up the URL so it doesn't look messy. From that point on, any AI-powered project that loads the SDK can detect the token and silently route its API calls through the MagicLink proxy instead of asking for a key.
+
+Each project has a separate usage counter. The token is good for 5 uses per project. Hit the limit and you get a friendly message pointing back to me.
+
+## The Proxy Pattern
+
+The worker has a generic `/api/proxy` endpoint that accepts a token, a project ID, a provider (`claude` or `gemini`), and the API request body. It validates the token, checks usage, makes the upstream call using its own stored secrets, increments the counter, and returns the result.
+
+For projects with more specific needs, there are project-specific endpoints. The theme-generator, for example, calls a separate Cloudflare Worker (`nano-claude-theme-manager`) that handles its own image generation pipeline. MagicLink's `/api/projects/theme-generator` endpoint validates the token, calls that worker, tracks usage, and returns the result. The API keys never leave the workers.
+
+## Integrating With Chrome Extensions
+
+Two of my projects are Chrome extensions: Theme Extension (day 5) and Persist (day 7). Chrome extensions can't read a web page's `localStorage`, so the standard SDK approach doesn't work out of the box.
+
+The solution is a content script that runs specifically on the MagicLink domain. When a recruiter visits their magic link in Chrome, the extension's content script reads the token from the page's `localStorage` and copies it into `chrome.storage.local`. The extension popup then reads from `chrome.storage.local` instead. Same end result, one extra hop.
+
+One thing worth noting: adding this content script to an existing extension is a manifest change, which means submitting a new version to the Chrome Web Store. Both the Theme Extension and Persist updates are waiting on that review process before they'll be live for general users.
+
+## The Demo Storage Problem (Persist)
+
+Persist stores captures in a Cloudflare D1 database tied to a single write token. If I routed demo users through to my real Persist worker, they'd be writing into my actual context store and seeing each other's captures.
+
+Instead, MagicLink stores demo captures directly in its own KV namespace, keyed by the recruiter's token. Each recruiter gets a completely isolated demo space. The `/api/projects/persist` endpoint handles all four operations (capture, list, toggle shared, delete) against that KV store. From the extension's perspective, it looks identical to the real thing.
+
+## The Video Upload Problem
+
+AI Video Searcher (day 11) presented a unique challenge. It uploads video files to Gemini's Files API using a resumable upload protocol with XHR progress tracking. That whole flow happens client-side and requires the API key at every step.
+
+For demo mode, MagicLink handles the upload server-side. The client sends the video file to a dedicated MagicLink endpoint as FormData. The worker uploads it to Gemini using its own key, polls until the file is processed, and returns the file reference. The client skips the progress tracking in demo mode (it just shows a spinner), but otherwise the experience is the same: upload a video, search it with plain English.
+
+## Stack
+
+- Cloudflare Workers + Hono for routing
+- Cloudflare KV for token and demo data storage
+- Vanilla JS IIFE for the SDK (no framework, loads fast, one `<script>` tag)
+- Integrated with: Theme Generator (day 4), Theme Extension (day 5), Persist (day 7), Brain Dump Scheduler (day 8), AI Video Searcher (day 11), Photo Location Quiz (day 12), Idea Explorer (day 13)
