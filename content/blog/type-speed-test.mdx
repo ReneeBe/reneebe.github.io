@@ -1,0 +1,26 @@
+---
+title: "Day 09 — Building a Typing Speed Test"
+date: "2026-03-23"
+excerpt: "A no-backend typing test with live WPM, accuracy, and error tracking. A good exercise in state management without reaching for AI."
+tags: ["day-09", "react", "typescript"]
+---
+
+After a few days of AI-heavy projects, Day 9 was a deliberate change of pace: a typing speed test with no backend, no API calls, just state management and DOM interaction.
+
+## How It Works
+
+The whole thing lives in a single `useTypingTest` hook. The test starts the moment you type the first character, which is when the timer kicks off and `startTime` gets recorded. From there, every keystroke recalculates WPM, accuracy, and error count on the fly.
+
+WPM is calculated from the word count of what you've typed so far divided by elapsed minutes, so it's a live rolling average rather than a final result. Accuracy is character-by-character: each position in the typed string gets compared against the passage and errors are counted cumulatively.
+
+The test ends when `typed === passage` exactly, so you can't finish with uncorrected errors. If you made a mistake you have to go back and fix it.
+
+## The State
+
+The tricky part was the timer. It runs on a 100ms `setInterval` but only updates `elapsed`. WPM and accuracy recalculate on each keypress instead of on each tick, which keeps the stats responsive without doing unnecessary work on the timer path.
+
+The character highlighting in the display is a map over the passage string. Each character gets a `correct`, `incorrect`, or `pending` class depending on whether you've typed it yet and whether you got it right.
+
+## Why No AI
+
+Partly as a palette cleanser, partly because this kind of project is worth doing without AI assistance occasionally. State machines, timer management, and character-level diffing are fundamentals that are good to stay sharp on.
