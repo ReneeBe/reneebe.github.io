@@ -1,0 +1,28 @@
+---
+title: "Day 17 — From Dinky Generator to Interactive Playground"
+date: "2026-04-06"
+excerpt: "On Friday I was at a total loss for project ideas, so I made a basic haiku generator. Over the weekend I almost scrapped it. On Monday I decided to build on top of it instead."
+tags: ["day-17", "ai", "claude", "react", "dnd-kit"]
+---
+
+I was really stumped for ideas on Friday. I spent a while trying to come up with something and then took a walk outside because sometimes that helps with creativity, and eventually just went with the first thing that felt shippable: a haiku generator. Type a subject, Claude Haiku writes you a poem, lines fade in one by one. It worked just fine. It was also the most basic thing I'd built in the whole challenge, essentially just an API call.
+
+Over the weekend I decided I was going to replace it with something else on the next workday. But then on that next day I decided the better move was to augment the project. The foundation was solid. The haiku generator just needed to be more *interactive*.
+
+## What Changed
+
+Three things:
+
+**Real-time generation.** Instead of typing a subject and clicking Write, the haiku now regenerates as you type. Every keystroke (debounced by 800ms) triggers a new API call, and the previous haiku shimmers while the next one loads. In MagicLink demo mode it still uses the explicit button, since you only get 5 uses and burning them all on keystrokes would be a bad experience.
+
+**Syllable highlighting.** Each syllable position gets its own color across all three lines. Syllable 1 is lavender, syllable 2 is teal, syllable 3 is amber, and so on. The visual effect makes the 5-7-5 structure immediately obvious. The splitting uses the `hyphen` library, which applies TeX hyphenation patterns to break English words at syllable boundaries. It's not perfect (hyphenation and syllabification aren't the same thing) but it's close enough for a creative tool.
+
+**Drag to rearrange.** You can grab any word and drag it to a new position, either within the same line or to a different line entirely. When you move a word between lines, the syllable counts break, so the app sends the rearranged words back to Claude to rewrite the poem. It preserves the theme and as many of the original words as possible while restoring the 5-7-5 structure. There's also a client-side validation step that checks the syllable counts using the `syllable` package and retries if Claude gets it wrong.
+
+## The Onboarding Problem
+
+None of these features are obvious from looking at the page. A first-time visitor would type a subject, see a haiku, and never know they can drag the words or toggle syllable colors. So there's a short three-step walkthrough that appears after your first haiku is generated: type to generate, syllable colors, drag to rearrange. You can skip it, and a small `?` button in the footer brings it back.
+
+## Stack
+
+Same repo as Day 16, same URL. The upgrade adds `@dnd-kit/core`, `@dnd-kit/sortable`, and `hyphen` as dependencies, and splits the single-file App.tsx into a proper component tree with hooks and utility modules.

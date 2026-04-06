@@ -135,9 +135,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/haiku",
     completed: true,
   },
-  ...Array.from({ length: 34 }, (_, i) => ({
-    day: i + 17,
-    title: `Day ${i + 17}`,
+  {
+    day: 17,
+    title: "Haiku Playground",
+    description: "An interactive upgrade to the Day 16 haiku generator: real-time generation as you type, syllable highlighting with color-coded positions, and drag-to-rearrange words.",
+    url: "https://reneebe.github.io/haiku/",
+    repo: "https://github.com/ReneeBe/haiku",
+    completed: true,
+  },
+  ...Array.from({ length: 33 }, (_, i) => ({
+    day: i + 18,
+    title: `Day ${i + 18}`,
     completed: false,
   })),
 ];
