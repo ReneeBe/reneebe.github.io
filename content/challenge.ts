@@ -146,7 +146,7 @@ export const challengeProjects: ChallengeProject[] = [
   {
     day: 18,
     title: "Rosetta",
-    description: "Paste code in one language, pick a target, and get a three-column breakdown: original, translated, and a line-by-line explanation of every difference.",
+    description: "Paste code in one language, pick a target translation language, and get a three-column breakdown: original, translated, and a line-by-line explanation of every difference.",
     url: "https://reneebe.github.io/rosetta/",
     repo: "https://github.com/ReneeBe/rosetta",
     completed: true,
