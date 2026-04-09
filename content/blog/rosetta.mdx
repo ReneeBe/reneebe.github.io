@@ -1,0 +1,24 @@
+---
+title: "Day 18 — Rosetta: Learning a Language Through Translation"
+date: "2026-04-08"
+excerpt: "A code translator that explains every difference line by line. The goal isn't just to convert your code, it's to teach you why the target language does things differently."
+tags: ["day-18", "ai", "claude", "react", "education"]
+---
+
+Most code translators just give you the output. You paste JavaScript, pick Python, and get back Python. If you already know Python, great. If you don't, you're staring at unfamiliar syntax with no idea why anything changed.
+
+Rosetta does the translation, but then it breaks the result down line by line in a three-column table: your original code, the translated version, and a plain-English explanation of what changed and why. The explanations are educational, aimed at someone who knows the source language and is trying to learn the target.
+
+## The Prompt
+
+The interesting part was the prompt design. Claude returns structured JSON with three fields per line group: the original code, the translated code, and an explanation. Related lines get grouped together (an import block, a function signature) so the explanations stay coherent rather than fragmenting across individual lines.
+
+The system prompt is strict about the JSON format: no markdown fences, no commentary outside the schema. There's a fallback parser that tries to extract JSON from the response if Claude wraps it in extra text, but it rarely needs to fire.
+
+## The Language List
+
+The dropdown includes 50+ languages, from the obvious (Python, Java, Go) to the niche (Zig, Nim, VHDL). Claude handles most of them well. The translations for mainstream languages are solid; for more obscure ones the output is occasionally approximate, but the explanations are still useful for understanding the conceptual differences.
+
+## Why
+
+I wanted something that treats translation as a learning opportunity rather than a shortcut. If you're picking up Rust after years of JavaScript, the interesting part isn't what the code looks like in Rust. It's understanding *why* Rust requires explicit lifetime annotations where JavaScript doesn't, or why there's no `null`. That's the kind of thing Rosetta explains.

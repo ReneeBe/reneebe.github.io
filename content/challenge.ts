@@ -143,9 +143,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/haiku",
     completed: true,
   },
-  ...Array.from({ length: 33 }, (_, i) => ({
-    day: i + 18,
-    title: `Day ${i + 18}`,
+  {
+    day: 18,
+    title: "Rosetta",
+    description: "Paste code in one language, pick a target, and get a three-column breakdown: original, translated, and a line-by-line explanation of every difference.",
+    url: "https://reneebe.github.io/rosetta/",
+    repo: "https://github.com/ReneeBe/rosetta",
+    completed: true,
+  },
+  ...Array.from({ length: 32 }, (_, i) => ({
+    day: i + 19,
+    title: `Day ${i + 19}`,
     completed: false,
   })),
 ];
