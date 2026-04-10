@@ -1,0 +1,38 @@
+---
+title: "Day 19 — Comparing Neighborhoods the Way I Wish I Could When I Moved to LA"
+date: "2026-04-09"
+excerpt: "A side-by-side neighborhood comparison tool with custom walkability scoring, Census rent data, school info, air quality, and draggable map markers. Built from a real need."
+tags: ["day-19", "react", "maps", "google-places", "census"]
+---
+
+When I moved to LA, I spent hours bouncing between tabs trying to figure out what different neighborhoods were actually like. One site had rent data, another had walkability, a third had school ratings. None of them let me put two neighborhoods next to each other and just compare.
+
+So I built one.
+
+## What It Does
+
+You search for two neighborhoods (or pick from the suggestion buttons) and get a side-by-side breakdown: a map, a walkability score, amenity counts, median rent, nearby schools, and air quality. You can drag the map marker to explore nearby areas without re-searching, and zip code boundaries are overlaid so you can see where one zip ends and another begins.
+
+## Building My Own Walkability Score
+
+The original plan was to use the Walk Score API, but it required an email tied to your domain and the signup process was finicky. So I built my own walkability metric instead, which turned out to be more interesting.
+
+The score is a weighted composite of Google Places amenity counts within a 1km radius. Grocery stores and transit stations are weighted heavily (you need those daily), parks and gyms are weighted moderately, and bars and cafes are lighter. Each category is normalized against a reasonable maximum, then everything is combined into a 0-100 score.
+
+It's not as sophisticated as Walk Score's algorithm (they factor in pedestrian-friendliness, road metrics, and walking routes), but it captures the core question: how much useful stuff is within walking distance? And it gives me something concrete to talk about in interviews.
+
+## The Census Decision
+
+For rent data, I used the US Census Bureau's American Community Survey 5-year estimates. It's not real-time market data. Zillow or Apartments.com would be more current, but those APIs are either paid or restricted. The Census data covers every zip code in the country for free, with no API key required. For a comparison tool, consistent coverage matters more than up-to-the-minute accuracy. The app notes the data source so users know what they're looking at.
+
+## The Google Places Cap
+
+Google Places returns a maximum of 60 results per category (three pages of 20). In dense urban areas like Manhattan or downtown LA, most categories hit that cap. The app shows "60+" when a count is capped so users know it's a floor, not an exact number. For comparing dense-vs-sparse neighborhoods this still works well. For comparing two dense neighborhoods, the differentiators end up being the sparser categories like grocery stores, dog parks, and transit stops.
+
+## Draggable Exploration
+
+The feature I use the most is dragging the map marker. You search for a neighborhood, see the data, then drag the pin a few blocks over and watch everything update. The app reverse-geocodes the new position to show the neighborhood name and zip code. It makes the tool feel more like exploring than searching.
+
+## Stack
+
+React + TypeScript + Vite, Leaflet with CartoDB Voyager tiles, Google Maps JavaScript API (Places + Geocoding), US Census ACS API, NCES school data, and AirNow EPA air quality. No AI in this one, just APIs and math.

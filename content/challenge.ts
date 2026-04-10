@@ -151,9 +151,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/rosetta",
     completed: true,
   },
-  ...Array.from({ length: 32 }, (_, i) => ({
-    day: i + 19,
-    title: `Day ${i + 19}`,
+  {
+    day: 19,
+    title: "Neighborhood Compare",
+    description: "Pick two neighborhoods and compare them side by side: custom walkability score, amenity counts, median rent, schools, air quality, and draggable map exploration.",
+    url: "https://reneebe.github.io/neighborhood-compare/",
+    repo: "https://github.com/ReneeBe/neighborhood-compare",
+    completed: true,
+  },
+  ...Array.from({ length: 31 }, (_, i) => ({
+    day: i + 20,
+    title: `Day ${i + 20}`,
     completed: false,
   })),
 ];
