@@ -70,7 +70,7 @@ export default function RootLayout({
         {/* Content */}
         <div className="relative z-10">
           <Nav />
-          <main className="pt-20">{children}</main>
+          <main className="pt-16 sm:pt-20">{children}</main>
           <Footer />
         </div>
       </body>

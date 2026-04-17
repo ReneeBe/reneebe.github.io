@@ -26,7 +26,7 @@ export default function FiftyProjectsPage() {
   }));
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-20">
+    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
       <div className="mb-4 flex items-center gap-4">
         <p
           className="text-xs font-mono uppercase tracking-widest"
@@ -37,7 +37,7 @@ export default function FiftyProjectsPage() {
         <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
       <h1
-        className="mb-4 text-5xl font-black tracking-tight sm:text-6xl"
+        className="mb-4 text-4xl font-black tracking-tight sm:text-5xl md:text-6xl"
         style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
         50 Projects
