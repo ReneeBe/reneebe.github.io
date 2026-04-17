@@ -39,7 +39,7 @@ export default async function PostPage({ params }: Props) {
   });
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-20">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
       {/* Back */}
       <Link
         href="/blog"
@@ -60,7 +60,7 @@ export default async function PostPage({ params }: Props) {
           <span>{post.readingTime} min read</span>
         </div>
         <h1
-          className="mb-5 text-4xl font-black leading-tight tracking-tight sm:text-5xl"
+          className="mb-5 text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl"
           style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
         >
           {post.title}
@@ -88,7 +88,7 @@ export default async function PostPage({ params }: Props) {
           prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
           prose-a:text-[#3a86ff] prose-a:no-underline hover:prose-a:underline
           prose-code:text-[#f72585] prose-code:bg-white/5 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-sm
-          prose-pre:bg-white/[0.04] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl
+          prose-pre:bg-white/[0.04] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl prose-pre:overflow-x-auto
           prose-strong:text-white
           prose-p:text-white/60 prose-li:text-white/60
           prose-blockquote:border-l-[#f72585] prose-blockquote:text-white/40"
@@ -102,7 +102,7 @@ export default async function PostPage({ params }: Props) {
           Found this useful? Let&apos;s connect.
         </p>
         <a
-          href="mailto:hello@reneeberger.dev"
+          href="mailto:reneelberger@gmail.com"
           className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105"
           style={{ background: "linear-gradient(135deg, var(--grad-a), var(--grad-b))" }}
         >
