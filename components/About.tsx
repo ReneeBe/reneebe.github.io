@@ -81,7 +81,7 @@ function StackCard({
 
 export default function About() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24">
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       {/* Section label */}
       <div className="mb-12 flex items-center gap-4">
         <p
@@ -93,11 +93,11 @@ export default function About() {
         <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
 
-      <div className="grid gap-12 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         {/* Left: bio */}
         <div>
           <h2
-            className="mb-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl"
+            className="mb-6 text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl"
             style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
           >
             I build products,
@@ -131,7 +131,7 @@ export default function About() {
             className="mt-8 glass rounded-2xl p-5"
             style={{ boxShadow: "0 0 40px rgba(247,37,133,0.1)" }}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full bg-[#06d6a0]"
@@ -143,7 +143,7 @@ export default function About() {
                 </div>
               </div>
               <a
-                href="mailto:hello@reneeberger.dev"
+                href="mailto:reneelberger@gmail.com"
                 className="rounded-full px-4 py-2 text-xs font-semibold text-white transition-all duration-200 hover:scale-105"
                 style={{ background: "linear-gradient(135deg, var(--grad-a), var(--grad-b))" }}
               >

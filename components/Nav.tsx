@@ -22,11 +22,11 @@ export default function Nav() {
         {/* Logo */}
         <Link
           href="/"
-          className="mr-2 rounded-full px-4 py-1.5 text-sm font-black tracking-tight"
+          className="mr-1 rounded-full px-2 py-1.5 text-sm font-black tracking-tight sm:mr-2 sm:px-4"
           style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
         >
           reneebe
-          <span className="gradient-text">.github.io</span>
+          <span className="gradient-text hidden sm:inline">.github.io</span>
         </Link>
 
         {/* Divider */}
@@ -40,7 +40,7 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
-              className="rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200"
+              className="rounded-full px-2 py-1.5 text-sm font-medium transition-all duration-200 sm:px-4"
               style={{
                 background: isActive ? "color-mix(in srgb, var(--foreground) 10%, transparent)" : undefined,
                 color: isActive
@@ -55,8 +55,8 @@ export default function Nav() {
         {/* Hire me badge */}
         <div className="ml-2 h-4 w-px" style={{ background: "color-mix(in srgb, var(--foreground) 10%, transparent)" }} />
         <Link
-          href="mailto:hello@reneeberger.dev"
-          className="ml-1 rounded-full px-4 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:brightness-110"
+          href="mailto:reneelberger@gmail.com"
+          className="ml-1 rounded-full px-3 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:brightness-110 sm:px-4"
           style={{ background: "linear-gradient(135deg, var(--grad-a), var(--grad-b))" }}
         >
           Hire me

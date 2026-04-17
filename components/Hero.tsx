@@ -8,7 +8,7 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[calc(100dvh-5rem)] flex-col items-center justify-center px-6 text-center">
+    <section className="relative flex min-h-[calc(100dvh-5rem)] flex-col items-center justify-center px-4 text-center sm:px-6">
       {/* Terminal label */}
       <div
         className="glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono"
@@ -23,7 +23,7 @@ export default function Hero() {
 
       {/* Name */}
       <h1
-        className="mb-4 text-7xl font-black leading-[0.9] tracking-tight sm:text-8xl md:text-[9rem]"
+        className="mb-4 text-5xl font-black leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]"
         style={{ fontFamily: "var(--font-heading)" }}
       >
         <span className="gradient-text inline-block pr-2">Renee</span>
@@ -32,7 +32,7 @@ export default function Hero() {
       </h1>
 
       {/* Subtitle */}
-      <p className="mb-10 max-w-md text-lg" style={{ color: "color-mix(in srgb, var(--foreground) 50%, transparent)" }}>
+      <p className="mb-10 max-w-md text-base sm:text-lg" style={{ color: "color-mix(in srgb, var(--foreground) 50%, transparent)" }}>
         I build fast, scalable web products — from pixel-perfect UIs to
         robust backend systems and everything in between.
       </p>
@@ -40,8 +40,8 @@ export default function Hero() {
       {/* CTAs */}
       <div className="mb-16 flex flex-wrap items-center justify-center gap-3">
         <Link
-          href="mailto:hello@reneeberger.dev"
-          className="glow-pink inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:brightness-110"
+          href="mailto:reneelberger@gmail.com"
+          className="glow-pink inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:brightness-110 sm:px-7 sm:py-3"
           style={{ background: "linear-gradient(135deg, #f72585, #7209b7)" }}
         >
           <span className="h-2 w-2 rounded-full bg-white/80" style={{ boxShadow: "0 0 5px white" }} />
@@ -49,7 +49,7 @@ export default function Hero() {
         </Link>
 <Link
           href="/blog"
-          className="glass inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white/50 transition-all duration-300 hover:scale-105 hover:text-white/80"
+          className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white/50 transition-all duration-300 hover:scale-105 hover:text-white/80 sm:px-7 sm:py-3"
         >
           Read the blog
         </Link>
