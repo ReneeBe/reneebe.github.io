@@ -22,11 +22,11 @@ export default function BlogPage() {
         <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
       <h1
-        className="mb-4 text-4xl font-black tracking-tight sm:text-5xl md:text-6xl"
+        className="mb-4 text-3xl font-black tracking-tight sm:text-5xl md:text-6xl"
         style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
-        Writing
-        <br />
+        Writing{" "}
+        <br className="hidden sm:block lg:hidden" />
         <span className="gradient-text">in public.</span>
       </h1>
       <p

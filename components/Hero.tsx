@@ -8,7 +8,7 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[calc(100dvh-5rem)] flex-col items-center justify-center px-4 text-center sm:px-6">
+    <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center sm:min-h-[calc(100dvh-5rem)] sm:px-6 sm:py-0">
       {/* Terminal label */}
       <div
         className="glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono"
@@ -26,8 +26,7 @@ export default function Hero() {
         className="mb-4 text-5xl font-black leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-[9rem]"
         style={{ fontFamily: "var(--font-heading)" }}
       >
-        <span className="gradient-text inline-block pr-2">Renee</span>
-        <br />
+        <span className="gradient-text inline-block pr-3 sm:pr-4 md:pr-6">Renee</span>
         <span style={{ color: "var(--foreground)" }}>Berger</span>
       </h1>
 
@@ -70,8 +69,8 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Scroll cue */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white/20">
+      {/* Scroll cue (hidden on mobile since hero is content-sized there) */}
+      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 animate-bounce text-white/20 sm:block">
         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
         </svg>

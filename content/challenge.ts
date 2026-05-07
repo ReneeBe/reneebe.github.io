@@ -159,9 +159,15 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/neighborhood-compare",
     completed: true,
   },
-  ...Array.from({ length: 31 }, (_, i) => ({
-    day: i + 20,
-    title: `Day ${i + 20}`,
+  {
+    day: 20,
+    title: "Mobile-Friendly Portfolio",
+    description: "Made the entire portfolio responsive — scaled headings, padding, nav, and layouts across all pages for phones and tablets.",
+    completed: true,
+  },
+  ...Array.from({ length: 30 }, (_, i) => ({
+    day: i + 21,
+    title: `Day ${i + 21}`,
     completed: false,
   })),
 ];
