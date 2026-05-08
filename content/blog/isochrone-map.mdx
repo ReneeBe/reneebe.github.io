@@ -1,0 +1,48 @@
+---
+title: "Day 22 — Walking Isochrones, Concentric Bands, and the Elevation Problem"
+date: "2026-04-15"
+excerpt: "Drop a pin anywhere on the globe and see how far you can walk in 5, 10, 20, 30, 45, or 60 minutes. Mapbox Isochrone API, turf.js polygon subtraction, and a Spectral palette."
+tags: ["day-22", "react", "maps", "mapbox", "isochrones", "turf"]
+---
+
+I have a background in geography, so it's no surprise that maps keep finding their way onto the grid. This one started from a personal frustration. Since moving to LA I've been quietly underwhelmed by where it actually feels reasonable to walk to from any given address. The city looks dense on a map, but in practice most neighborhoods are car-shaped: a coffee shop two blocks over might be a 25-minute detour around a freeway, and the "10-minute walk to a park" listing in a rental description is doing a lot of work. I wanted a tool that would let me drop a pin and see, honestly, how far you could actually walk in 30 minutes.
+
+The pipeline was simple: drop a pin, fetch a polygon, color it. Still a one-day build in hours, but the visualization turned out to be the interesting part.
+
+## What It Does
+
+Click anywhere on the map, search an address, or hit "Use my location" to drop a pin. The map paints six concentric color bands around the pin showing how far you can walk in 5, 10, 20, 30, 45, and 60 minutes. Spectral palette, light or dark mode, and a small stat panel telling you how many restaurants, cafes, parks, and transit stops sit within a 30-minute walk.
+
+## How The Distance Is Calculated
+
+This was the question I kept getting asked while testing it.
+
+The Mapbox Isochrone API does a graph-based shortest-path search over OpenStreetMap's walkable network: sidewalks, footpaths, residential streets, anything tagged as pedestrian-accessible. It expands outward from your pin and returns the polygon enclosing every point reachable within each time threshold.
+
+Default walking speed is 5 km/h (~3.1 mph), so 30 minutes is roughly a 2.5 km radius. But the polygons are blobby, not circular: they follow actual streets, so a 30-minute walk goes farther along a major boulevard than across a freeway you can't cross. The shape is more useful than a circle would be.
+
+## The Concentric Band Trick
+
+My first attempt rendered each isochrone polygon as a translucent fill stacked on top of the others. The result was that the closer-to-center bands looked darker because the alpha was stacking up. The center had six layers of color piling on top of each other.
+
+To get clean uniform bands I used turf.js to do polygon subtraction: each band is the larger polygon with the next-smaller one punched out as a hole. Now every band is a true annulus, no overlap, no alpha stacking. The fill opacity is the same everywhere on the map.
+
+## The 60-Minute Cap
+
+The Mapbox Isochrone API caps walking duration at 60 minutes, so I stopped there. When I was experimenting with a 90-minute ring earlier I worked around the cap by using `contours_meters` instead of `contours_minutes`, converting at 5 km/h. Same result, different parameter.
+
+## What Elevation Looks Like (Or Doesn't)
+
+Mapbox treats walking as flat ground at constant speed. It does not factor in elevation, slope, weather, your fitness, or traffic-light wait times. In a hilly city like SF, a 30-minute polygon would shrink considerably uphill and stretch downhill, but Mapbox draws it as if Castro and Bernal Heights were pancakes.
+
+A few options to fix this:
+
+1. Switch routing engine to OpenRouteService, which has a slope-aware walking profile based on Tobler's hiking function (walking speed drops exponentially as the terrain steepens).
+2. Keep Mapbox and post-process: sample elevation along the polygon boundary using terrain-rgb tiles, then warp the polygon inward in directions with steep climbs. Hacky but visually communicates the concept.
+3. Build a custom router on the OSM walking network with SRTM elevation data. Proper but multi-day.
+
+I'm planning option 1 on a future day so you can see the difference between Mapbox's flat-earth version and an elevation-aware one side by side — Bernal Heights will be the test case.
+
+## Stack
+
+Vite + React + TypeScript + Tailwind v4. Mapbox GL JS for the basemap, Mapbox Isochrone API for the polygons, Mapbox Geocoding for address-to-lat/lng, browser Geolocation API for "Use my location," and Overpass API for the POI counts inside the 30-minute polygon. Turf.js for the polygon subtraction.

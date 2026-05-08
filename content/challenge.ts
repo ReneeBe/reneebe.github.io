@@ -173,9 +173,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/magiclink",
     completed: true,
   },
-  ...Array.from({ length: 29 }, (_, i) => ({
-    day: i + 22,
-    title: `Day ${i + 22}`,
+  {
+    day: 22,
+    title: "Walking Isochrone Map",
+    description: "Drop a pin anywhere on the globe and see how far you can walk in 5, 10, 20, 30, 45, or 60 minutes — concentric color bands powered by the Mapbox Isochrone API and turf.js polygon subtraction.",
+    url: "https://reneebe.github.io/isochrone-map/",
+    repo: "https://github.com/ReneeBe/isochrone-map",
+    completed: true,
+  },
+  ...Array.from({ length: 28 }, (_, i) => ({
+    day: i + 23,
+    title: `Day ${i + 23}`,
     completed: false,
   })),
 ];
