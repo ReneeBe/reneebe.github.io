@@ -1,0 +1,54 @@
+---
+title: "Day 21 — MagicLink 2.0: From Email Gate to One-Click Demos"
+date: "2026-05-13"
+excerpt: "The first version of MagicLink asked recruiters to enter their email before they could try any of my AI projects. That was friction in the wrong place. The rebuild swaps the email gate for a three-tier system: visitor, recruiter, personal."
+tags: ["day-21", "cloudflare", "hono", "ai", "redesign"]
+---
+
+A few weeks after shipping the original MagicLink, I clicked through my own demos as a first-time visitor would, and I didn't like the experience. To try the haiku generator I had to type my email, copy a link, and paste it back. To try the brain dump scheduler I had to do it again because the link only worked on the project I'd come from. None of that made sense for a recruiter who just wanted to see if the haiku generator was any good before deciding whether to dig deeper.
+
+So I rebuilt it.
+
+## Three Tiers of Access
+
+The new MagicLink has three paths in. A **visitor** is anyone with no token. They get 5 free uses per project per day, tracked by hashed IP, with no signup. A **recruiter** clicks the resume link, which spins up a fresh token good for 20 uses across all projects (not per project), expiring in 30 days. A **personal** token is mine, unlimited, never exposed to the client.
+
+The visitor path is the big change. The first version assumed the user wanted to commit to my whole portfolio before trying anything. The new version lets people taste the work without giving up an email address.
+
+## The Resume Link
+
+Recruiters get one link on my resume. Clicking it hits `/resume`, which generates a token, stores it in KV with `source: 'resume'`, and redirects to the welcome page with the token in the URL. The SDK script captures the token, stashes it in localStorage, and quietly cleans up the URL bar. After that, every AI project on my portfolio routes through the same token without the user thinking about it.
+
+This solves a problem the original couldn't: I have no idea who clicks a resume link, so I can't pre-issue tokens. The `/resume` endpoint creates tokens on demand, one per click. If the same recruiter opens the link on two devices, they get two separate 20-use buckets. That's fine. Twenty uses on a phone and twenty on a laptop is still a reasonable demo budget.
+
+## Per-Visitor Caps with Hashed IPs
+
+The visitor pool was originally a global counter: 5 uses per project per day, shared by everyone. That was a problem. If one person hit a feature five times, the next visitor was locked out.
+
+The fix: track usage by hashed IP. Each visitor's IP gets SHA-256'd with a salt, truncated to 4 bytes, and used as their visitor ID. Each visitor gets their own daily allotment per project, isolated from everyone else. Privacy stays intact (no raw IPs in storage), and the analytics dashboard can show unique visitor counts.
+
+The haiku generator gets 10 uses per visitor per day instead of the default 5, since the syllable validation retry loop sometimes needs a second or third attempt to land on a clean 5-7-5.
+
+## Idempotency for Retry-Prone Projects
+
+Speaking of that retry loop: when the haiku model produces a 4-7-5 instead of 5-7-5, the client sends the response back with corrective feedback and asks for another try. Up to three API calls per logical generation. Without protection, that meant a single user-initiated haiku could burn three uses against the visitor cap.
+
+The fix is an idempotency key. The client generates one ID per logical generation and sends the same ID with each retry. The server checks a 5-minute KV cache. If the ID has been seen before from the same visitor, the call still goes through, but the usage counter doesn't increment and no analytics event is logged. One generation, one slot.
+
+## Removing the API Key Wall
+
+All eight AI-powered projects (haiku, rosetta, idea explorer, photo location quiz, video searcher, theme generator, portfolio skins, brain dump scheduler) used to ask for a personal Anthropic or Gemini key as a fallback. That's gone. Every project now routes through MagicLink unconditionally. With a token, you get a personal or recruiter quota. Without one, you're a visitor. The API key inputs are deleted from the UIs.
+
+## The Exhaustion Popup
+
+When a token or visitor cap is exhausted, the SDK shows a styled popup over whatever project the user is on, with two buttons: View Source on GitHub and Get in Touch (email). It's a soft landing for what was previously a confusing error message.
+
+## The Analytics Dashboard
+
+`/admin/dashboard` is password-protected and shows: total API calls, unique visitor count, recruiter usage, active tokens, a bar chart of usage by project, two timeline charts (last 14 days and all time), a table of recent events with visitor hash and project, and a table of recruiter tokens with usage bars.
+
+The two timelines are useful at different scales. The 14-day chart catches recent traffic spikes. The all-time chart shows the trajectory of the portfolio overall.
+
+## Stack
+
+Cloudflare Workers, Hono, Cloudflare KV, vanilla JS IIFE for the SDK. Same stack as the original. The rebuild was about taking better care of the user, not changing the infrastructure.

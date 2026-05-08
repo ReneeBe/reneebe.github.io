@@ -165,9 +165,17 @@ export const challengeProjects: ChallengeProject[] = [
     description: "Made the entire portfolio responsive — scaled headings, padding, nav, and layouts across all pages for phones and tablets.",
     completed: true,
   },
-  ...Array.from({ length: 30 }, (_, i) => ({
-    day: i + 21,
-    title: `Day ${i + 21}`,
+  {
+    day: 21,
+    title: "MagicLink 2.0",
+    description: "A rebuild of the demo token system: no email gate, per-visitor IP-hashed quotas, /resume one-click links for recruiters, an analytics dashboard, and idempotency for retry-prone projects.",
+    url: "https://magiclink.reneebe.workers.dev",
+    repo: "https://github.com/ReneeBe/magiclink",
+    completed: true,
+  },
+  ...Array.from({ length: 29 }, (_, i) => ({
+    day: i + 22,
+    title: `Day ${i + 22}`,
     completed: false,
   })),
 ];
