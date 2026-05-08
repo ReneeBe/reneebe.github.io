@@ -103,8 +103,8 @@ export default function ThemeSwitcher() {
 
       {open && (
         <div
-          className="glass-strong absolute right-0 top-11 z-[60] w-64 rounded-2xl p-2 shadow-2xl"
-          style={{ color: "var(--foreground)" }}
+          className="glass-strong absolute right-0 bottom-11 z-[60] w-64 rounded-2xl p-2 shadow-2xl sm:bottom-auto sm:top-11"
+          style={{ color: "var(--foreground)", background: "rgba(10, 10, 20, 0.92)" }}
         >
           <p
             className="px-3 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-widest"

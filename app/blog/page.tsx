@@ -11,7 +11,7 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-20">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
       <div className="mb-4 flex items-center gap-4">
         <p
           className="text-xs font-mono uppercase tracking-widest"
@@ -22,11 +22,11 @@ export default function BlogPage() {
         <div className="h-px flex-1" style={{ background: "color-mix(in srgb, var(--foreground) 5%, transparent)" }} />
       </div>
       <h1
-        className="mb-4 text-5xl font-black tracking-tight sm:text-6xl"
+        className="mb-4 text-3xl font-black tracking-tight sm:text-5xl md:text-6xl"
         style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
-        Writing
-        <br />
+        Writing{" "}
+        <br className="hidden sm:block lg:hidden" />
         <span className="gradient-text">in public.</span>
       </h1>
       <p
