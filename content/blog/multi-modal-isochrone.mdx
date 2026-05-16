@@ -5,13 +5,13 @@ excerpt: "Day 22 ignored elevation. Today's project fixes that by switching the 
 tags: ["day-23", "react", "maps", "ors", "isochrones", "cycling"]
 ---
 
-Day 22 ended with an open problem: Mapbox treats walking as flat ground at a constant 5 km/h, which is fine in LA but absurd anywhere with real topography. The polygons it draws look the same whether you're at the bottom of Bernal Heights or on a downtown grid. Today's project picks up where that one left off, with two changes: it routes through OpenRouteService instead of Mapbox, and it adds biking as a second transit mode.
+Day 22 ended with an open problem: Mapbox treats walking as flat ground at a constant 5 km/h, which is fine in a lot of LA but absurd anywhere with real topography. The polygons it draws look the same whether you're at the bottom of Bernal Heights or on a downtown grid. Today's project picks up where that one left off, with two changes: it routes through OpenRouteService instead of Mapbox, and it adds biking as a second transit mode.
 
 ## What It Does
 
 Drop a pin or search an address and toggle between walking and biking. Walking buckets are 5/10/20/30/45/60 minutes. Biking compresses to 5/10/15/20/30/45 since you cover roughly 3× the ground per minute. There's a compare view at `?view=compare` that shows both modes at once on the same pin, with the center divider literally splitting the "vs" in the heading.
 
-The heading also picks up the word "walkshed". I learned it from the GIS literature. It's the everyday name for a walking isochrone, the same way "watershed" is the area that drains to a single point. "Bikeshed" is the obvious extension. Same idea, two modes.
+The heading uses the word "walkshed". It's the everyday name for a walking isochrone, the same way "watershed" is the area that drains to a single point. "Bikeshed" is the obvious extension. Same idea, two modes.
 
 ## The Elevation Problem, And Why I Picked ORS
 
