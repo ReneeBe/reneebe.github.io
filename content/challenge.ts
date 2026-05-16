@@ -181,9 +181,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/isochrone-map",
     completed: true,
   },
-  ...Array.from({ length: 28 }, (_, i) => ({
-    day: i + 23,
-    title: `Day ${i + 23}`,
+  {
+    day: 23,
+    title: "Walkshed + Bikeshed Map",
+    description: "Adds elevation-aware routing and a biking mode to day 22 by swapping in OpenRouteService. Toggle between modes or open the side-by-side compare view to see how hills shrink the bike polygon and stretch the walking one.",
+    url: "https://reneebe.github.io/multi-modal-isochrone/",
+    repo: "https://github.com/ReneeBe/multi-modal-isochrone",
+    completed: true,
+  },
+  ...Array.from({ length: 27 }, (_, i) => ({
+    day: i + 24,
+    title: `Day ${i + 24}`,
     completed: false,
   })),
 ];

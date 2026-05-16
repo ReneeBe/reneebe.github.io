@@ -1,0 +1,53 @@
+---
+title: "Day 23 — Walksheds, Bikesheds, and the Hill Problem"
+date: "2026-04-16"
+excerpt: "Day 22 ignored elevation. Today's project fixes that by switching the routing engine to OpenRouteService and adding biking as a second transit mode. Plus a side-by-side compare view and a debugging story about an Overpass mirror returning silent zeros."
+tags: ["day-23", "react", "maps", "ors", "isochrones", "cycling"]
+---
+
+Day 22 ended with an open problem: Mapbox treats walking as flat ground at a constant 5 km/h, which is fine in LA but absurd anywhere with real topography. The polygons it draws look the same whether you're at the bottom of Bernal Heights or on a downtown grid. Today's project picks up where that one left off, with two changes: it routes through OpenRouteService instead of Mapbox, and it adds biking as a second transit mode.
+
+## What It Does
+
+Drop a pin or search an address and toggle between walking and biking. Walking buckets are 5/10/20/30/45/60 minutes. Biking compresses to 5/10/15/20/30/45 since you cover roughly 3× the ground per minute. There's a compare view at `?view=compare` that shows both modes at once on the same pin, with the center divider literally splitting the "vs" in the heading.
+
+The heading also picks up the word "walkshed". I learned it from the GIS literature. It's the everyday name for a walking isochrone, the same way "watershed" is the area that drains to a single point. "Bikeshed" is the obvious extension. Same idea, two modes.
+
+## The Elevation Problem, And Why I Picked ORS
+
+Mapbox's Isochrone API does not factor in slope. Their walking and cycling profiles use a constant speed across all terrain. For a hilly city this gives you the wrong polygon: a 30-minute walk uphill should be much shorter than the same time on flat ground, but Mapbox treats them as identical.
+
+OpenRouteService builds its routing graph with SRTM elevation data baked in. For walking and cycling, the cost function penalizes steep grades. Drop a pin near Twin Peaks in SF and the polygon visibly shrinks toward the summit and stretches toward the flatter neighborhoods to the east. That's the whole reason for this project.
+
+## Which Cycling Profile?
+
+ORS offers four cycling profiles, and the choice matters:
+
+- `cycling-regular` is tuned for the casual commuter. Heavily slope-averse. Prefers paved roads and bike paths.
+- `cycling-road` is even more slope-averse. Road-bike, strictly paved.
+- `cycling-mountain` is permissive on steep terrain and happy on dirt trails. Polygons extend much farther into hilly off-road areas.
+- `cycling-electric` treats slopes as nearly free since the motor compensates. Polygons stay close to circular.
+
+I picked `cycling-regular` because it answers the question most users actually have: how far can a normal person bike from here in 15 minutes? Mountain-bike or e-bike profiles would tell a different story. A future iteration could expose all four as a sub-toggle.
+
+Worth noting: cycling-regular also refuses to route over stairs, since `highway=steps` isn't bikeable in OSM tagging. Comes for free.
+
+## The Compare View
+
+I went back and forth on whether walking and biking should be on a toggle or shown side-by-side. Side-by-side makes the elevation effect dramatically obvious — you can see the bike polygon stretching far where walking can't reach. A single map is less visually busy. So both exist, with a small "Compare side-by-side →" button on the single view.
+
+The compare view has one pin, one search bar, one place name, but two maps fed by separate ORS requests in parallel. Each has its own legend (because the contour buckets differ between modes) and its own POI stat panel (counts within 30 min walk vs 15 min bike).
+
+## A Debugging Detour: The Silently Wrong Overpass Mirror
+
+POI counts initially took 110 seconds in the compare view. I rewrote the Overpass query to use a single bbox-scoped request with four `out count;` statements (one round trip per mode instead of four), raced across three public mirrors via `Promise.any`. That dropped it under 5 seconds.
+
+Then the counts started coming back as zeros. The race was working. The winning mirror was returning empty results.
+
+The culprit was `overpass.osm.ch`, which still runs Overpass 0.7.59. That older build silently mis-processes multi-statement queries: it accepts the request, returns the right number of count elements, but every total is zero. I confirmed it via curl against the same bounding box where kumi.systems (running 0.7.62) correctly returned 116 restaurants.
+
+Fix: drop osm.ch, swap it for `overpass.openstreetmap.fr`, and add a sanity check that rejects all-zero responses so any future broken mirror gets thrown out of the race instead of poisoning it.
+
+## Stack
+
+Vite + React + TypeScript + Tailwind v4. Mapbox GL JS for the basemap and Mapbox Geocoding for addresses. OpenRouteService for isochrones (`foot-walking` and `cycling-regular` profiles). turf.js for non-overlapping annular bands. Overpass API (across kumi.systems, overpass-api.de, and openstreetmap.fr mirrors, raced) for POI counts.
