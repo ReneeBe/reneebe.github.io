@@ -1,0 +1,59 @@
+---
+title: "Day 24 — Three Modes, One Picker, and Some Honest Limitations"
+date: "2026-04-17"
+excerpt: "Adds driving (with traffic) as a third mode, turns the compare view into a picker so you can match any two modes against each other, and explicitly punts on public transit for a reason worth explaining."
+tags: ["day-24", "react", "maps", "mapbox", "ors", "isochrones"]
+---
+
+Day 23 left the project with a glaring gap. It covers walking and biking, which is half of a city's transportation story. Today's project adds driving (with traffic), turns the compare view into a picker so you can match any two modes against each other, and explicitly punts on public transit for a reason worth explaining.
+
+## What It Does
+
+Three modes now: walking, biking, and driving. The single view has a Walk/Bike/Drive toggle, and the headings extend to "Driveshed" alongside Walkshed and Bikeshed.
+
+The compare view has two dropdowns at the top: pick any two modes and they render side by side. Each dropdown excludes the mode the other side is already using, so you can't compare walking against walking. The URL captures the comparison: `?view=compare&left=walking&right=driving` is a shareable link.
+
+## Routing By Mode
+
+Different modes deserve different routing engines:
+
+| Mode | Engine | Reason |
+|------|--------|--------|
+| Walking | ORS `foot-walking` | Slope matters; SRTM elevation built into the graph |
+| Biking | ORS `cycling-regular` | Same as walking |
+| Driving | Mapbox `driving-traffic` | Traffic matters more than elevation for cars |
+
+Slope is the dominant factor on foot or on a bike. Cars handle hills easily. What affects driving time is congestion, which Mapbox's `driving-traffic` profile tries to model and ORS's `driving-car` profile doesn't.
+
+This means the project now uses two routing engines. The dispatch happens inside one function (`fetchIsochrones(pin, mode, contours)`) so callers don't see the split, but it's a real architecture decision worth flagging.
+
+## What "Real-Time Traffic" Means In Practice
+
+I should be honest about Mapbox's driving-traffic data. The polygons it returns are not live traffic in the way Google Maps shows you live traffic. Mapbox blends historical probe data with some real-time signals — closer to "what traffic usually looks like at this hour" than "what's happening on the road right now." Their Isochrone endpoint also doesn't expose a `depart_at` parameter, so we can't ask for a specific time.
+
+Two practical consequences:
+
+1. Polygons can underestimate LA reality. Santa Monica to Calabasas at 5pm is probably 60+ minutes in real life. Mapbox might draw it inside the 45-minute ring.
+2. Each contour traces the *optimal* route under those predicted conditions. If you actually get stuck on the 405 for 20 minutes, the polygon won't reflect that.
+
+If we wanted true live traffic, we'd need to use Google Distance Matrix and stitch a polygon by querying a grid of around 150 destinations from the origin. Possible but a real implementation project on its own. I'm leaving that implementation as a potential future day.
+
+## Public Transit Is Out Of Scope
+
+The original day 24 plan was to add transit too. After looking around, I decided to skip it. The short version: there's no suitable free transit isochrone API. GTFS-aware transit routing requires a heavyweight backend (OpenTripPlanner self-hosted with a downloaded GTFS feed, or paid services like TravelTime which only has a 14-day trial). Commercial providers monetize transit specifically because it's expensive to compute.
+
+A future day could tackle it by self-hosting OpenTripPlanner for a specific city. Worth doing on its own when the time comes.
+
+## Synchronized Compare Reveal
+
+One small UX detail worth calling out: ORS returns walking and biking polygons in one or two seconds. Mapbox's `driving-traffic` takes five to eight. In the compare view, the fast side was popping in seconds before the slow side, which read as "the driving map is broken."
+
+So now both panels wait for both fetches before either polygon reveals. They appear together, with synchronized skeleton placeholders in the meantime. Total time equals the slower one, but the UI is consistent.
+
+## Discrete Legend
+
+Side note: the legend used to be a continuous gradient bar, which implied more granularity than the polygons actually have. It's now six discrete color swatches paired with their time ranges ("up to 5 min", "5–10 min", and so on). Reads honestly.
+
+## Stack
+
+Vite + React + TypeScript + Tailwind v4. Mapbox GL JS for the basemap, Mapbox Geocoding for addresses, **Mapbox Isochrone API (`driving-traffic`)** for driving, OpenRouteService (`foot-walking` and `cycling-regular`) for walking and biking. Browser Geolocation for "Use my location," Overpass API for POI counts, turf.js for non-overlapping annular bands.

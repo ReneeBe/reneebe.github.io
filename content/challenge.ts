@@ -189,9 +189,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/multi-modal-isochrone",
     completed: true,
   },
-  ...Array.from({ length: 27 }, (_, i) => ({
-    day: i + 24,
-    title: `Day ${i + 24}`,
+  {
+    day: 24,
+    title: "Reach Compare",
+    description: "Adds driving with real-time traffic as a third mode (via Mapbox driving-traffic) and turns the side-by-side view into a picker so you can compare any two of walking, biking, or driving. Same pin, two routing engines, one shareable URL.",
+    url: "https://reneebe.github.io/reach-compare/",
+    repo: "https://github.com/ReneeBe/reach-compare",
+    completed: true,
+  },
+  ...Array.from({ length: 26 }, (_, i) => ({
+    day: i + 25,
+    title: `Day ${i + 25}`,
     completed: false,
   })),
 ];
