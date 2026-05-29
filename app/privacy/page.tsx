@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy policy for Renee Berger's Chrome extensions: Theme Generator and Persist.",
+  description: "Privacy policy for Renee Berger's Chrome extensions: Theme Generator, Persist, and TabSweep.",
 };
 
 export default function PrivacyPage() {
@@ -31,15 +31,16 @@ export default function PrivacyPage() {
         className="mb-2 text-sm"
         style={{ color: "color-mix(in srgb, var(--foreground) 35%, transparent)" }}
       >
-        Last updated: March 23, 2025
+        Last updated: May 29, 2026
       </p>
       <p
         className="mb-14 text-base"
         style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}
       >
         This policy covers the Chrome extensions{" "}
-        <strong style={{ color: "var(--foreground)" }}>Theme Generator</strong> and{" "}
-        <strong style={{ color: "var(--foreground)" }}>Persist</strong>, developed by Renee Berger.
+        <strong style={{ color: "var(--foreground)" }}>Theme Generator</strong>,{" "}
+        <strong style={{ color: "var(--foreground)" }}>Persist</strong>, and{" "}
+        <strong style={{ color: "var(--foreground)" }}>TabSweep</strong>, developed by Renee Berger.
       </p>
 
       <div className="flex flex-col gap-10">
@@ -142,10 +143,58 @@ export default function PrivacyPage() {
             ),
           },
           {
+            title: "TabSweep",
+            body: (
+              <div className="flex flex-col gap-4">
+                <p>
+                  TabSweep is a side-panel extension that uses AI to triage your open Chrome tabs into
+                  intent-based groups so you can close, focus, or natively group them in bulk.
+                </p>
+                <div>
+                  <p className="mb-2 font-semibold" style={{ color: "var(--foreground)" }}>
+                    What data is sent:
+                  </p>
+                  <ul className="list-disc pl-5 flex flex-col gap-1">
+                    <li>
+                      When you click <em>Sweep these tabs</em>, the titles and URLs of your currently open
+                      tabs are sent to a Cloudflare Worker (MagicLink), which calls Anthropic Claude to
+                      group them by intent. No data is sent without this explicit action.
+                    </li>
+                    <li>
+                      Page contents, browsing history, favicons, and per-tab metadata are never read or
+                      transmitted. Internal Chrome pages (<code>chrome://</code>, <code>chrome-extension://</code>,
+                      <code>devtools://</code>, <code>about:</code>, <code>view-source:</code>) are filtered out
+                      before any request.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="mb-2 font-semibold" style={{ color: "var(--foreground)" }}>
+                    What is stored:
+                  </p>
+                  <ul className="list-disc pl-5 flex flex-col gap-1">
+                    <li>
+                      Nothing persistent. TabSweep does not save data between sessions, locally or on the
+                      server. Tab titles and URLs are processed in real time and are not logged or retained.
+                    </li>
+                  </ul>
+                </div>
+                <p>
+                  The hosted demo is rate-limited per visitor via a hashed IP address with no account or
+                  signup. If you exceed the daily quota, the extension links you to the GitHub repo so you
+                  can fork the project and plug in your own AI key.
+                </p>
+              </div>
+            ),
+          },
+          {
             title: "Permissions",
             body: (
               <div className="flex flex-col gap-4">
-                <p>Both extensions request the following Chrome permissions:</p>
+                <p>
+                  <strong style={{ color: "var(--foreground)" }}>Theme Generator</strong> and{" "}
+                  <strong style={{ color: "var(--foreground)" }}>Persist</strong> request:
+                </p>
                 <ul className="list-disc pl-5 flex flex-col gap-1">
                   <li>
                     <strong style={{ color: "var(--foreground)" }}>activeTab</strong> — to access the currently
@@ -160,6 +209,23 @@ export default function PrivacyPage() {
                     pages (Theme Generator) or to read page content on capture (Persist).
                   </li>
                 </ul>
+                <p>
+                  <strong style={{ color: "var(--foreground)" }}>TabSweep</strong> requests:
+                </p>
+                <ul className="list-disc pl-5 flex flex-col gap-1">
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>sidePanel</strong> — to render the TabSweep UI
+                    in Chrome&apos;s side panel.
+                  </li>
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>tabs</strong> — to read the titles and URLs of
+                    your open tabs, focus a tab when you click it, and close tabs when you trigger a close action.
+                  </li>
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>tabGroups</strong> — to create native Chrome tab
+                    groups when you click &ldquo;Group in Chrome.&rdquo;
+                  </li>
+                </ul>
               </div>
             ),
           },
@@ -168,12 +234,13 @@ export default function PrivacyPage() {
             body: (
               <div className="flex flex-col gap-4">
                 <p>
-                  Requests from both extensions are routed through Cloudflare Workers. No analytics services,
+                  Requests from all three extensions are routed through Cloudflare Workers. No analytics services,
                   trackers, or advertising networks are used.
                 </p>
                 <p>
                   When Theme Generator calls an AI API, the request is subject to the privacy policy of Google
-                  (Gemini) or Anthropic (Claude), depending on which API key is used.
+                  (Gemini) or Anthropic (Claude), depending on which API key is used. TabSweep calls Anthropic
+                  (Claude) via the MagicLink worker; that traffic is subject to Anthropic&apos;s privacy policy.
                 </p>
               </div>
             ),
