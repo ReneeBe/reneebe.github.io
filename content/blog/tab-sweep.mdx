@@ -1,0 +1,95 @@
+---
+title: "Day 25 — A Side Panel That Triages Your Open Tabs"
+date: "2026-04-20"
+excerpt: "A Chrome extension that asks Claude to sort your open tabs into intent-based groups so you can close, focus, or natively group them in bulk. The first project to actually consume MagicLink 2.0 from the start."
+tags: ["day-25", "chrome-extension", "manifest-v3", "side-panel", "claude", "magiclink"]
+---
+
+I have a weekly recurring task to 'close extraneous tabs.' I've been doing it manually since high school, albeit at varying levels of consistency, because the tools I've tried haven't stuck. The usual fixes (auto-close after N days, manual tab groups, a separate browser per project) all ask you to be the disciplined one. I wanted something that would do the disciplining for me: glance at every tab I have open, group them by what they're actually for, and let me close or organize them in bulk.
+
+That's TabSweep.
+
+## What It Does
+
+Open the side panel from the extension icon. It shows how many tabs you have open, across how many windows. Click "Sweep these tabs" and Claude reads the title and URL of every tab and returns 3-7 named groups by intent: "Active work," "Reference / docs," "Shopping," "Stale / forgotten," and whatever else makes sense for what you actually have open.
+
+Each group becomes a card. You can:
+
+- Click a tab title to focus it.
+- Click the × to close a single tab.
+- Hit "Close N" to close the whole group.
+- Hit "Group in Chrome" to push the group into a native Chrome tab group, colored and labeled.
+
+A separate panel at the top flags literal-duplicate URLs (with trailing-slash and hash normalization) so you can dedupe before triaging.
+
+## Side Panel, Not Popup
+
+Chrome popups have a finite size and they close the moment you click outside them. Both are wrong for a triage UI. You want to keep the list visible while you click around between Chrome windows checking which tabs you actually care about. The MV3 side panel API is the right surface for that: it lives in Chrome's sidebar, doesn't dismiss when you change tabs, and you can size it however you want.
+
+## MagicLink 2.0's First Consumer
+
+[Day 21](/blog/magiclink-2/) rebuilt my demo token system into a three-tier model where anonymous visitors get a per-IP-hashed daily quota with no signup. TabSweep is my first project that initially shipped with it as the only path to the model. There's no API key input, no email gate, no copy-pasted token. The extension POSTs to `/api/proxy` and the worker decides whether you have quota left.
+
+For me as the builder, this means I can share the extension and anyone can try it without me having to provision anything for them. For a visitor who hits the cap, the error message points them at the GitHub repo with instructions for forking and plugging in their own AI key. The hosted version is a demo, not a product.
+
+## The Native Tab Groups Gotcha
+
+When you click "Group in Chrome" on a triage group, the extension calls `chrome.tabs.group({ tabIds })` and then `chrome.tabGroups.update(groupId, { title, color })`. Easy in the happy case.
+
+The catch: Chrome native tab groups can't span windows. If your "Reference / docs" group has three MDN tabs in one window and a React docs tab in another, `chrome.tabs.group` will fail the whole call. The fix is to split the triage group's tab IDs by `windowId` before calling, then create one Chrome group per window:
+
+```ts
+const byWindow = new Map<number, number[]>();
+for (const tabId of group.tabIds) {
+  const tab = tabsById.get(tabId);
+  if (!tab) continue;
+  byWindow.set(tab.windowId, [...(byWindow.get(tab.windowId) ?? []), tabId]);
+}
+await Promise.allSettled(
+  [...byWindow.values()].map((ids) =>
+    groupTabsInChrome(ids, group.label, color),
+  ),
+);
+```
+
+Both per-window groups get the same label and color, so visually they read as the same group across windows even though Chrome's data model treats them as separate.
+
+## Stale Tab IDs
+
+The triage call to Claude takes a few seconds. By the time the user clicks an action on a group, some of those tab IDs may already be closed (the user closed one manually, a download tab auto-closed, Chrome restarted). `chrome.tabs.remove`, `chrome.tabs.update`, and `chrome.tabs.group` all reject the entire call when given a stale ID, which surfaces in the console as "No tab with id: 1598350288."
+
+Three fixes layered together:
+
+1. Every tab-touching helper now wraps its `chrome.tabs.*` call in a try/catch and treats the "tab gone" case as a no-op.
+2. `groupTabsInChrome` does a pre-flight `chrome.tabs.get` on each ID and filters out the missing ones, because the whole batch rejects if any are stale.
+3. The UI re-renders against the current live tab list after each action, so cards drop out when their tabs vanish, regardless of the reason.
+
+## The "Swept" Section
+
+The first version of "Group in Chrome" created the group successfully, but the card stayed exactly where it was on the panel. Nothing visually told you the action worked. You'd click the button, see no change, click it again, end up with two Chrome groups stacked.
+
+The fix is a separate section at the bottom of the panel labeled "Swept." When you group a card in Chrome, it slides down into that section, fades slightly, and gets a small ✓ next to the label. The button text changes from "Group in Chrome" to "Re-group" (in case you ungrouped it in Chrome itself and want to redo the action).
+
+Tracking which cards are handled needs a stable identity, because closing tabs in other groups shifts the array indices around. Each triage group gets a `crypto.randomUUID()` stamped on it when the sweep returns, and a `Set<string>` tracks which IDs have been handled. New sweep, new IDs, empty set.
+
+## Debouncing the Tab Listener
+
+The side panel listens to `chrome.tabs.onCreated`, `onRemoved`, and `onUpdated` to keep the tab count and "alive" filter in sync. `onUpdated` is the noisy one: it fires on every status change, URL change, title change, and favicon change. Loading three pages can mean thirty events.
+
+The listener now filters to `info.url || info.title || info.status === 'complete'` (the cases that actually change what we render), then debounces with a 200ms throttle so a burst of events collapses into one re-query.
+
+## What Goes To The Model
+
+Only titles and URLs. No page content, no history beyond what's open right now, no favicons, no per-tab metadata. Internal pages (`chrome://`, `chrome-extension://`, `devtools://`, `about:`, `view-source:`) are filtered out before the model sees them: they're noise the user can't act on from here and they waste tokens.
+
+The triage prompt asks for 3-7 buckets, prefers fewer-larger over many-tiny, and explicitly tells the model not to moralize. Output is JSON, parsed defensively (the model occasionally wraps it in a code fence). Orphan tab IDs (ones the model didn't place anywhere) get folded into a final "Uncategorized" group.
+
+## Permissions, Minimized
+
+Manifest V3 permissions: `sidePanel`, `tabs`, `tabGroups`. No `storage` (nothing persists between sessions). No content scripts. The only `host_permissions` entry is my MagicLink worker. The extension can't read the contents of any page you visit, only the titles and URLs of open tabs, which is what `tabs` already grants.
+
+## Stack
+
+Manifest V3, side panel API, native tab groups. React 19 + TypeScript + Vite + Tailwind v4 for the side panel UI. Claude Haiku 4.5 for the triage call. MagicLink 2.0 (Cloudflare Worker) as the auth-less proxy. The icon is a hand-drawn SVG broom in Bianchi celeste over straw bristles, rasterized to 16/48/128 PNGs with sharp.
+
+TabSweep is live on the [Chrome Web Store](https://chromewebstore.google.com/detail/ofnpgolklhfnbbimjnmdhnljlmmaoekh). The repo and a "Run your own" guide for swapping in your own AI provider live in the [README](https://github.com/ReneeBe/tab-sweep).

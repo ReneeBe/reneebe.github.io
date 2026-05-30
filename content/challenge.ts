@@ -197,9 +197,17 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/reach-compare",
     completed: true,
   },
-  ...Array.from({ length: 26 }, (_, i) => ({
-    day: i + 25,
-    title: `Day ${i + 25}`,
+  {
+    day: 25,
+    title: "TabSweep",
+    description: "A Chrome extension that uses Claude to triage your open tabs into intent-based groups, with a side panel UI, native Chrome tab group integration, and the first project to run entirely on MagicLink 2.0's visitor quota.",
+    url: "https://chromewebstore.google.com/detail/ofnpgolklhfnbbimjnmdhnljlmmaoekh",
+    repo: "https://github.com/ReneeBe/tab-sweep",
+    completed: true,
+  },
+  ...Array.from({ length: 25 }, (_, i) => ({
+    day: i + 26,
+    title: `Day ${i + 26}`,
     completed: false,
   })),
 ];
