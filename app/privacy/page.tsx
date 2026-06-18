@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy policy for Renee Berger's Chrome extensions: Theme Generator, Persist, and TabSweep.",
+  description: "Privacy policy for Renee Berger's Chrome extensions and macOS apps: Theme Generator, Persist, TabSweep, and OnTrack.",
 };
 
 export default function PrivacyPage() {
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
         className="mb-2 text-sm"
         style={{ color: "color-mix(in srgb, var(--foreground) 35%, transparent)" }}
       >
-        Last updated: May 29, 2026
+        Last updated: June 1, 2026
       </p>
       <p
         className="mb-14 text-base"
@@ -40,7 +40,8 @@ export default function PrivacyPage() {
         This policy covers the Chrome extensions{" "}
         <strong style={{ color: "var(--foreground)" }}>Theme Generator</strong>,{" "}
         <strong style={{ color: "var(--foreground)" }}>Persist</strong>, and{" "}
-        <strong style={{ color: "var(--foreground)" }}>TabSweep</strong>, developed by Renee Berger.
+        <strong style={{ color: "var(--foreground)" }}>TabSweep</strong>, and the macOS app{" "}
+        <strong style={{ color: "var(--foreground)" }}>OnTrack</strong>, all developed by Renee Berger.
       </p>
 
       <div className="flex flex-col gap-10">
@@ -188,6 +189,67 @@ export default function PrivacyPage() {
             ),
           },
           {
+            title: "OnTrack",
+            body: (
+              <div className="flex flex-col gap-4">
+                <p>
+                  OnTrack is a macOS menu bar app that watches your Google Calendar events and displays a small
+                  custom banner on screen a few minutes before each event begins.
+                </p>
+                <div>
+                  <p className="mb-2 font-semibold" style={{ color: "var(--foreground)" }}>
+                    What data is sent:
+                  </p>
+                  <ul className="list-disc pl-5 flex flex-col gap-1">
+                    <li>
+                      When you sign in, the app uses Google&apos;s OAuth 2.0 flow (PKCE) to request a read-only
+                      access token for your Google Calendar. Authentication happens directly between your machine
+                      and Google&apos;s servers — no data passes through any server controlled by Renee Berger.
+                    </li>
+                    <li>
+                      While running, the app periodically calls the Google Calendar API to fetch your upcoming
+                      events for the calendars you&apos;ve selected. These requests go directly from your machine
+                      to Google. The app has no backend.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="mb-2 font-semibold" style={{ color: "var(--foreground)" }}>
+                    What is stored locally:
+                  </p>
+                  <ul className="list-disc pl-5 flex flex-col gap-1">
+                    <li>
+                      OAuth access and refresh tokens are stored in the macOS{" "}
+                      <strong style={{ color: "var(--foreground)" }}>Keychain</strong>, scoped to the OnTrack
+                      app bundle. Only OnTrack can read them.
+                    </li>
+                    <li>
+                      Your connected account list (email, display name, which calendars to watch) is stored in
+                      the app&apos;s local <code>UserDefaults</code> on your device. Your calendar events
+                      themselves are never written to disk — they live only in memory.
+                    </li>
+                  </ul>
+                </div>
+                <p>
+                  OnTrack does not collect analytics, display ads, or transmit your calendar data anywhere other
+                  than between your machine and Google. You can disconnect any account or quit the app at any
+                  time. Disconnecting an account removes its tokens from the Keychain and revokes the local
+                  reference; you may also revoke OnTrack&apos;s access to your Google account at{" "}
+                  <a
+                    href="https://myaccount.google.com/permissions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4"
+                    style={{ color: "var(--foreground)" }}
+                  >
+                    myaccount.google.com/permissions
+                  </a>
+                  .
+                </p>
+              </div>
+            ),
+          },
+          {
             title: "Permissions",
             body: (
               <div className="flex flex-col gap-4">
@@ -226,6 +288,23 @@ export default function PrivacyPage() {
                     groups when you click &ldquo;Group in Chrome.&rdquo;
                   </li>
                 </ul>
+                <p>
+                  <strong style={{ color: "var(--foreground)" }}>OnTrack</strong> requests:
+                </p>
+                <ul className="list-disc pl-5 flex flex-col gap-1">
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>Google Calendar (read-only)</strong> — to fetch
+                    your calendar list and upcoming events.
+                  </li>
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>Network (outbound)</strong> — to communicate
+                    with Google&apos;s OAuth and Calendar API endpoints.
+                  </li>
+                  <li>
+                    <strong style={{ color: "var(--foreground)" }}>Keychain (own items only)</strong> — to store
+                    OAuth tokens securely.
+                  </li>
+                </ul>
               </div>
             ),
           },
@@ -234,13 +313,27 @@ export default function PrivacyPage() {
             body: (
               <div className="flex flex-col gap-4">
                 <p>
-                  Requests from all three extensions are routed through Cloudflare Workers. No analytics services,
-                  trackers, or advertising networks are used.
+                  Requests from the Chrome extensions are routed through Cloudflare Workers. No analytics services,
+                  trackers, or advertising networks are used by any of these products.
                 </p>
                 <p>
                   When Theme Generator calls an AI API, the request is subject to the privacy policy of Google
                   (Gemini) or Anthropic (Claude), depending on which API key is used. TabSweep calls Anthropic
                   (Claude) via the MagicLink worker; that traffic is subject to Anthropic&apos;s privacy policy.
+                </p>
+                <p>
+                  OnTrack communicates directly with Google&apos;s OAuth and Calendar API servers from your
+                  machine. Traffic to and from Google is subject to{" "}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4"
+                    style={{ color: "var(--foreground)" }}
+                  >
+                    Google&apos;s privacy policy
+                  </a>
+                  . No Renee-hosted server is involved.
                 </p>
               </div>
             ),

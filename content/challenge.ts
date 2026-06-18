@@ -81,10 +81,9 @@ export const challengeProjects: ChallengeProject[] = [
   },
   {
     day: 10,
-    title: "Pomodoro Timer",
-    description: "Customizable Pomodoro timer with configurable focus and break durations, and separate alarm sound selection for each mode.",
-    url: "https://reneebe.github.io/pomodoro-timer/",
-    repo: "https://github.com/ReneeBe/pomodoro-timer",
+    title: "OnTrack",
+    description: "A native macOS menu bar app that watches your Google Calendar and slides an NYC subway car across your screen a few minutes before each meeting, with the event title displayed in the train's destination sign.",
+    repo: "https://github.com/ReneeBe/OnTrack",
     completed: true,
   },
   {

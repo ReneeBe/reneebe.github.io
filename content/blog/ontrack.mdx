@@ -1,0 +1,44 @@
+---
+title: "Day 10 — OnTrack: A NYC Subway That Reminds You About Meetings"
+date: "2026-03-24"
+excerpt: "My calendar notifications were so easy to dismiss that I started missing meetings. So I built a macOS app that slides a stylized subway train across my screen a few minutes before each event, with the event title displayed in the train's destination sign."
+tags: ["day-10", "swift", "swiftui", "macos", "google-calendar"]
+---
+
+I sometimes miss meetings. Not because I forgot they were happening, but because the standard macOS calendar notification is so easy to swipe away that my brain stopped registering them at all. I'd glance at the notification, think "yeah, in five minutes," and then completely forget.
+
+So I built something my brain couldn't ignore: a stylized NYC subway car that slides across the middle of my screen a few minutes before any event on my calendar, with the event title displayed where the destination sign would be. It's transparent to mouse input, so I can keep typing through it. But I see it.
+
+This is the first project in this challenge that's a native macOS app, not a web app or a Chrome extension. SwiftUI + AppKit, no Electron.
+
+## The Subway
+
+The whole concept hinges on the banner being a real visual moment, not just a horizontal bar that says "STANDUP IN 5 MIN." So the train is a side-view illustration of a generic NYC subway car: silver stainless body, four window-pairs alternating with three door-pairs, tinted-blue windows with passenger silhouettes inside, bogey trucks with detailed wheels, yellow safety stripes on the door seams, a roof arch, marker lights, a stenciled car number. Where one of the middle windows would be, there's a black LED destination panel showing the event title and start time, modeled on the real interior destination strips you see through the window of an nyc subway station.
+
+The train pulls in slowly with a subtle squash on impact (vertical compression, horizontal stretch, then a small spring wobble back to normal). It holds for five seconds in the middle of the screen, then accelerates off to the right with a horizontal motion stretch. The whole thing is on a separate transparent NSWindow at the status-bar level so it floats over everything without grabbing focus.
+
+Below the train, two silver rails over brown railroad ties run across the full width of the screen. The tracks stay still while the train moves over them.
+
+## Calendar Access
+
+I went with a direct Google Calendar API integration rather than EventKit because I didn't want the app to depend on the user adding their Google account through macOS System Settings. The app does its own OAuth using `ASWebAuthenticationSession` with PKCE (no client secret, since this is a desktop app), and stores the resulting access and refresh tokens in the macOS Keychain scoped to the bundle ID.
+
+Multi-account is a hard requirement for me because I have three Google accounts that all carry meetings. The Preferences pane has an Accounts tab that lets you add any number of Google accounts; each account expands to show a checkbox list of its calendars so you can pick which to watch.
+
+Behind the scenes, a 60-second polling loop fetches `events.list` for each watched calendar (now through now + 2 hours) and merges them into a single sorted upcoming-event list. A separate 5-second scheduler watches that list and fires the banner when the current time crosses each event's trigger time.
+
+## The Smallest-Reminder Option
+
+The "trigger time" is configurable. The simple option is a fixed lead time (a slider from 1 to 30 minutes). The more interesting option is what I call "match Google Calendar reminder," which reads each event's `reminders.overrides` array and picks the smallest popup reminder. So if a particular event has reminders set at 2 hours, 30 minutes, and 10 minutes in Google Calendar, the banner fires 10 minutes before. If an event has no popup reminders set, the app falls back to the fixed slider value.
+
+This is the mode I use, because it lets me set lead times on specific high-stakes meetings in Google Calendar itself (where I'm already managing the event) instead of having a single global value that's wrong for half my calendar.
+
+## The Privacy Story
+
+I'm not hosting a backend for this project. The OAuth flow goes directly to Google's `accounts.google.com`. The token exchange goes directly to `oauth2.googleapis.com`. The Calendar API calls go directly to `www.googleapis.com/calendar/v3`. Nothing routes through any server I control. The tokens live in the macOS Keychain and the connected-account metadata lives in `UserDefaults`; calendar events themselves are never written to disk.
+
+I'm submitting OnTrack for Google's verification so the OAuth consent screen will show the app branding cleanly instead of the "Google hasn't verified this app" warning. That requires the privacy policy on this site to document what OnTrack does, plus the homepage URL and screenshots. Until verification clears (it can take a few weeks for sensitive scopes), test users see a small unverified-app notice on their way in.
+
+## Stack
+
+Swift + SwiftUI, macOS 14+, no Electron, no third-party dependencies beyond Apple's frameworks. `MenuBarExtra` for the status item, `Settings` scene for preferences, `ASWebAuthenticationSession` for OAuth, `Security` for Keychain, `ServiceManagement.SMAppService` for launch-at-login. Swift Testing for unit tests (PKCE generation, smallest-reminder logic, fire-time calculation).
