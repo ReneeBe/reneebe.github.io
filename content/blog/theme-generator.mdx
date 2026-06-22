@@ -1,0 +1,30 @@
+---
+title: "Day 04 — Putting a Face on the Backend"
+date: "2026-03-11"
+excerpt: "Day 3 was a Cloudflare Worker with no UI. Day 4 was fixing that."
+tags: ["day-04", "ai", "react", "vite", "gemini", "claude"]
+---
+
+Day 3 produced a Cloudflare Worker that could take a text description and return a full UI theme as JSON. Useful, but not exactly something you could show anyone. Day 4 was building the frontend that made it real.
+
+Theme Generator is a Vite/React app that wraps the Day 3 worker in a UI. You describe a vibe, hit generate, and watch the theme come back — color palette, gradients, glass effect values, font choices, background pattern. There's a live preview that applies the theme to a mock portfolio layout as it loads, and a copy button to grab the JSON.
+
+## The Live Preview Problem
+
+The interesting part of the UI wasn't the form — it was the preview. Showing a generated theme on a blank page doesn't tell you much. The whole point of a UI theme is how it feels on actual content: headings, cards, nav, blobs in the background.
+
+So the preview renders a mock portfolio layout — the same structure as my actual portfolio — and applies the generated CSS custom properties directly to it as they arrive. You can see the colors and fonts snap in before the full theme is done generating.
+
+There's also an optional site URL field: paste in any URL and the preview loads it in an iframe with the theme injected. Seeing your own site reskin in real time is the moment it stops feeling like a toy.
+
+## Wiring to the Worker
+
+The app doesn't call Gemini or Claude directly — it calls the nano-claude-theme-manager worker endpoint. The worker URL, Gemini API key, and Anthropic API key all live in a collapsible config panel. That means anyone can run their own copy of the worker and point the UI at it.
+
+Keeping the keys out of the main form and tucked into a config panel was a small UX decision that made the app feel cleaner. You set it once and forget it.
+
+## What Stays Simple
+
+The app itself is straightforward React — a form, a hook that manages the async generation state, and two preview components. The interesting logic all lives in the Day 3 worker. Day 4 was really just: build a good enough UI to make Day 3 worth showing.
+
+That division of labor felt right. The worker does one thing well. The UI does one thing well. Together they're actually useful.

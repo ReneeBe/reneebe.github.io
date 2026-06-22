@@ -27,7 +27,7 @@ export const challengeProjects: ChallengeProject[] = [
   {
     day: 3,
     title: "Nano Claude Theme Manager",
-    description: "Cloudflare Worker that chains Gemini image generation + Claude vision to produce ThemeVars JSON from a text description.",
+    description: "Cloudflare Worker (no demo — backend only) that chains Gemini image generation + Claude vision to produce ThemeVars JSON from a text description.",
     repo: "https://github.com/ReneeBe/nano-claude-theme-manager",
     completed: true,
   },
@@ -52,7 +52,7 @@ export const challengeProjects: ChallengeProject[] = [
     title: "Accessibility Auditor",
     description: "Paste a React component and get a list of WCAG 2.2 issues detected via static AST analysis. No backend, no AI — pure client-side.",
     url: "/tools/accessibility-auditor/",
-    repo: "https://github.com/reneebe/accessibilityAuditor",
+    repo: "https://github.com/ReneeBe/accessibilityAuditor",
     completed: true,
   },
   {
