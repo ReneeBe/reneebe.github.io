@@ -13,7 +13,7 @@ export default function ChallengeGrid({ projects }: Props) {
   const [active, setActive] = useState<ProjectWithBlog | null>(null);
 
   const completed = projects.filter((p) => p.completed).length;
-  const pct = Math.round((completed / 50) * 100);
+  const pct = Math.round((completed / 25) * 100);
 
   return (
     <div>
@@ -31,7 +31,7 @@ export default function ChallengeGrid({ projects }: Props) {
               className="ml-1 text-sm"
               style={{ color: "color-mix(in srgb, var(--foreground) 30%, transparent)" }}
             >
-              / 50 complete
+              / 25 complete
             </span>
           </div>
           <span
@@ -56,14 +56,14 @@ export default function ChallengeGrid({ projects }: Props) {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
+      {/* Grid — 5x5 layout for 25 projects */}
+      <div className="grid grid-cols-5 gap-2 sm:gap-3">
         {projects.map((project) => {
           const accent = accentColors[(project.day - 1) % accentColors.length];
 
           const cardInner = (
             <div
-              className={`flex aspect-square flex-col items-start justify-between rounded-xl p-2 transition-all duration-300 ${
+              className={`flex aspect-square flex-col items-start justify-between rounded-xl p-2 sm:p-4 transition-all duration-300 ${
                 project.completed ? "hover:-translate-y-1" : ""
               }`}
               style={
@@ -80,22 +80,22 @@ export default function ChallengeGrid({ projects }: Props) {
               }
             >
               <span
-                className="text-[10px] font-black font-mono"
+                className="text-[10px] sm:text-lg font-black font-mono"
                 style={{ color: project.completed ? accent : "color-mix(in srgb, var(--foreground) 15%, transparent)" }}
               >
                 {String(project.day).padStart(2, "0")}
               </span>
               {project.completed && (
-                <div className="flex w-full flex-col gap-0.5">
+                <div className="flex w-full flex-col gap-0.5 sm:gap-1">
                   <span
-                    className="line-clamp-2 text-[9px] font-medium leading-tight"
+                    className="line-clamp-2 text-[9px] sm:text-sm font-medium leading-tight sm:leading-snug"
                     style={{ color: "color-mix(in srgb, var(--foreground) 60%, transparent)" }}
                   >
                     {project.title}
                   </span>
                   {project.pendingStore && (
                     <span
-                      className="text-[7px] font-mono font-bold leading-tight"
+                      className="text-[7px] sm:text-[10px] font-mono font-bold leading-tight"
                       style={{ color: accent, opacity: 0.7 }}
                     >
                       coming soon
