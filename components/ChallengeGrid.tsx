@@ -16,7 +16,7 @@ export default function ChallengeGrid({ projects }: Props) {
   const pct = Math.round((completed / 25) * 100);
 
   return (
-    <div>
+    <div className="mx-auto max-w-4xl">
       {/* Progress */}
       <div className="glass mb-8 rounded-2xl p-5">
         <div className="mb-3 flex items-baseline justify-between">
