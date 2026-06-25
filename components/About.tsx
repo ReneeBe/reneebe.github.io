@@ -115,8 +115,8 @@ export default function About() {
             </p>
             <p>
               Currently working through my{" "}
-              <a href="/50projects" className="font-medium hover:underline" style={{ color: "var(--grad-c)" }}>
-                50 Projects in 50 Weekdays
+              <a href="/25projects" className="font-medium hover:underline" style={{ color: "var(--grad-c)" }}>
+                25 Projects in 25 Weekdays
               </a>{" "}
               challenge and writing about what I learn on the{" "}
               <a href="/blog" className="font-medium hover:underline" style={{ color: "var(--grad-d)" }}>

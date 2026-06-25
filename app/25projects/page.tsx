@@ -4,11 +4,11 @@ import { getAllPosts } from "@/lib/posts";
 import ChallengeGrid from "@/components/ChallengeGrid";
 
 export const metadata: Metadata = {
-  title: "50 Projects in 50 Weekdays",
-  description: "Tracking my progress building one small project every weekday for 50 days.",
+  title: "25 Projects in 25 Weekdays",
+  description: "Tracking my progress building one small project every weekday for 25 days.",
 };
 
-export default function FiftyProjectsPage() {
+export default function TwentyFiveProjectsPage() {
   // Build a map from day number → blog slug using the day-XX tag on each post
   const posts = getAllPosts();
   const dayToBlogSlug: Record<number, string> = {};
@@ -40,15 +40,15 @@ export default function FiftyProjectsPage() {
         className="mb-4 text-3xl font-black tracking-tight sm:text-5xl md:text-6xl"
         style={{ fontFamily: "var(--font-heading)", color: "var(--foreground)" }}
       >
-        50 Projects{" "}
+        25 Projects{" "}
         <br className="hidden sm:block lg:hidden" />
-        <span className="gradient-text">in 50 Days.</span>
+        <span className="gradient-text">in 25 Days.</span>
       </h1>
       <p
         className="mb-14 max-w-xl text-base"
         style={{ color: "color-mix(in srgb, var(--foreground) 40%, transparent)" }}
       >
-        One small project every weekday for 50 days. Building instincts, shipping fast,
+        One small project every weekday for 25 days. Building instincts, shipping fast,
         learning in public. Click any completed project to see details.
       </p>
 

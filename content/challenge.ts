@@ -204,9 +204,4 @@ export const challengeProjects: ChallengeProject[] = [
     repo: "https://github.com/ReneeBe/tab-sweep",
     completed: true,
   },
-  ...Array.from({ length: 25 }, (_, i) => ({
-    day: i + 26,
-    title: `Day ${i + 26}`,
-    completed: false,
-  })),
 ];
